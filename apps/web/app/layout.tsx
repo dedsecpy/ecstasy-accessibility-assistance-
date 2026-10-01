@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Live, cited, route-level accessibility answers for venues.",
   applicationName: "Ecstasy",
   appleWebApp: { capable: true, title: "Ecstasy", statusBarStyle: "default" },
-  icons: { icon: "/icon.svg", apple: "/icon-192.png" },
+  icons: { icon: [{ url: "/favicon.png", type: "image/png", sizes: "64x64" }], apple: "/apple-touch-icon.png" },
   formatDetection: { telephone: false },
 };
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AccountMenu } from "./AccountMenu";
 import { Icon, type IconName } from "./Icon";
-import { AppLogo } from "./ui";
+import { Wordmark } from "./ui";
 
 type Tab = { href: string; label: string; icon: IconName };
 
@@ -44,6 +44,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const staff = path.startsWith("/staff");
   const tabs = staff ? STAFF_TABS : VISITOR_TABS;
 
+  if (path === "/") return <>{children}</>;
+
   return (
     <div className="min-h-dvh">
       <a href="#main" className="sr-only-focusable fixed left-3 top-3 z-[60] rounded-full bg-fill px-4 py-2 font-semibold text-white">
@@ -52,9 +54,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Sidebar: tablet and desktop */}
       <aside className="glass fixed inset-y-0 left-0 z-40 hidden w-[272px] flex-col border-r border-line md:flex">
-        <Link href="/plan" className="tap mx-3 mt-5 flex items-center gap-3 rounded-[14px] px-2">
-          <AppLogo size={36} />
-          <span className="text-[22px] font-bold tracking-tight">Ecstasy</span>
+        <Link href="/" aria-label="Ecstasy home" className="tap mx-3 mt-4 flex items-center rounded-[14px] px-2">
+          <Wordmark className="w-[156px]" />
         </Link>
         <nav aria-label="Main" className="mt-6 flex-1 space-y-6 overflow-y-auto px-3">
           <div>
@@ -74,9 +75,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       {/* Top bar: phones */}
       <header className="glass sticky top-0 z-30 border-b border-line pt-[env(safe-area-inset-top)] md:hidden">
         <div className="flex h-14 items-center justify-between gap-2 px-4">
-          <Link href={staff ? "/staff/check" : "/plan"} className="tap flex items-center gap-2.5">
-            <AppLogo size={30} />
-            <span className="text-[19px] font-bold tracking-tight">Ecstasy</span>
+          <Link href={staff ? "/staff/check" : "/"} aria-label={staff ? "Ecstasy staff home" : "Ecstasy home"} className="tap flex items-center gap-2.5">
+            <Wordmark className="w-[112px]" />
             {staff && <span className="badge bg-ink px-2 py-0.5 text-[11px] uppercase tracking-wide text-bg">Staff</span>}
           </Link>
           <AccountMenu />

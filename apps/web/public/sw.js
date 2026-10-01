@@ -1,7 +1,7 @@
 // Ecstasy service worker: offline app shell. API calls always go to the network
 // (live status must never be served from cache).
-const CACHE = "ecstasy-shell-v3";
-const SHELL = ["/plan", "/answer", "/live", "/report", "/icon.svg", "/manifest.webmanifest"];
+const CACHE = "ecstasy-shell-v4";
+const SHELL = ["/", "/plan", "/answer", "/live", "/report", "/brand/wordmark.webp", "/brand/mark.webp", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));

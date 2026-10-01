@@ -2,15 +2,23 @@
 
 import { Icon } from "./Icon";
 
+/** The feathered "e" from the Ecstasy wordmark. */
 export function AppLogo({ size = 32 }: { size?: number }) {
+  return <img src="/brand/mark.webp" alt="" aria-hidden="true" width={size} height={size} draggable={false} className="shrink-0 select-none" />;
+}
+
+/** The full feathered "ecstasy" wordmark (3:1). Size it with a width class. */
+export function Wordmark({ className = "", priority = false }: { className?: string; priority?: boolean }) {
   return (
-    <span
-      aria-hidden="true"
-      className="inline-flex shrink-0 items-center justify-center text-white shadow-[0_4px_12px_-4px_rgba(0,102,204,0.6)]"
-      style={{ width: size, height: size, borderRadius: size * 0.28, background: "linear-gradient(180deg,#3d8bff 0%,#0058cc 100%)" }}
-    >
-      <Icon name="angel" className="h-[70%] w-[70%]" stroke={2} />
-    </span>
+    <img
+      src="/brand/wordmark.webp"
+      alt="Ecstasy"
+      width={1200}
+      height={400}
+      draggable={false}
+      fetchPriority={priority ? "high" : undefined}
+      className={`h-auto select-none ${className}`}
+    />
   );
 }
 
