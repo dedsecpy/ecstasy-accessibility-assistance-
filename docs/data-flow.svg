@@ -1,0 +1,182 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="850" viewBox="0 0 1700 850" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8c959f"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a7f37"/></marker>
+    <marker id="aB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f6feb"/></marker>
+    <marker id="aA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#9a6700"/></marker>
+  </defs>
+
+  <rect width="1700" height="850" fill="#ffffff"/>
+
+  <text x="60" y="70" font-size="30" font-weight="700" fill="#1b1f24">How Ecstasy gets its information</text>
+  <text x="60" y="100" font-size="16" fill="#6e7781">From the people who know, to the records the model reads, to the answer a visitor sees.</text>
+
+  <!-- stage headers -->
+  <g font-size="12" font-weight="700" fill="#8c959f" letter-spacing="1.5" text-anchor="middle">
+    <text x="140" y="155">WHO KNOWS</text>
+    <text x="420" y="155">HOW IT ARRIVES</text>
+    <text x="700" y="155">PROCESSED</text>
+    <text x="980" y="155">STORED AS</text>
+    <text x="1400" y="155">WHEN SOMEONE ASKS</text>
+  </g>
+
+  <!-- ================= sources ================= -->
+  <g fill="#f6f8fa" stroke="#57606a" stroke-width="2">
+    <circle cx="140" cy="210" r="30"/>
+    <circle cx="140" cy="320" r="30"/>
+    <circle cx="140" cy="430" r="30"/>
+    <circle cx="140" cy="540" r="30"/>
+    <circle cx="140" cy="650" r="30"/>
+  </g>
+  <g stroke="#57606a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- toolbox -->
+    <g transform="translate(140,210) scale(0.62)">
+      <rect x="-22" y="-8" width="44" height="28" rx="4"/><path d="M-9 -8 V-16 H9 V-8"/><path d="M-22 4 H22"/>
+    </g>
+    <!-- ruler -->
+    <g transform="translate(140,320) scale(0.62) rotate(-30)">
+      <rect x="-24" y="-9" width="48" height="18" rx="3"/><path d="M-14 -9 V-1 M-6 -9 V-3 M2 -9 V-1 M10 -9 V-3 M18 -9 V-1"/>
+    </g>
+    <!-- clock -->
+    <g transform="translate(140,430) scale(0.62)">
+      <circle r="22"/><path d="M0 -12 V0 L9 6"/>
+    </g>
+    <!-- clipboard -->
+    <g transform="translate(140,540) scale(0.62)">
+      <rect x="-20" y="-24" width="40" height="52" rx="5"/><rect x="-9" y="-30" width="18" height="10" rx="3" fill="#f6f8fa"/><path d="M-10 4 L-3 11 L11 -4"/>
+    </g>
+    <!-- person -->
+    <g transform="translate(140,650) scale(0.62)">
+      <circle cx="0" cy="-12" r="10"/><path d="M-20 24 C-20 6 20 6 20 24"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="140" y="257" font-size="15" font-weight="700" fill="#1b1f24">Facilities team</text>
+    <text x="140" y="274" font-size="12.5" fill="#6e7781">lift log, repairs, works</text>
+    <text x="140" y="367" font-size="15" font-weight="700" fill="#1b1f24">Access auditor</text>
+    <text x="140" y="384" font-size="12.5" fill="#6e7781">entrances, slopes, distances</text>
+    <text x="140" y="477" font-size="15" font-weight="700" fill="#1b1f24">Visitor services</text>
+    <text x="140" y="494" font-size="12.5" fill="#6e7781">desk hours, pre-booking</text>
+    <text x="140" y="587" font-size="15" font-weight="700" fill="#1b1f24">Duty manager</text>
+    <text x="140" y="604" font-size="12.5" fill="#6e7781">pre-event route check</text>
+    <text x="140" y="697" font-size="15" font-weight="700" fill="#1b1f24">Visitors</text>
+    <text x="140" y="714" font-size="12.5" fill="#6e7781">what they actually found</text>
+  </g>
+
+  <!-- sources to arrival -->
+  <g stroke="#8c959f" stroke-width="2" fill="none" marker-end="url(#aS)">
+    <path d="M172 210 C270 210 270 284 364 286"/>
+    <path d="M172 320 C270 320 270 300 364 300"/>
+    <path d="M172 430 C270 430 270 316 364 314"/>
+    <path d="M172 540 C270 540 270 548 364 550"/>
+    <path d="M172 650 C270 650 270 572 364 570"/>
+  </g>
+
+  <!-- ================= ingestion (green) ================= -->
+  <g fill="#eefaf1" stroke="#1a7f37" stroke-width="2">
+    <circle cx="420" cy="300" r="52"/>
+    <circle cx="420" cy="560" r="52"/>
+    <circle cx="700" cy="300" r="52"/>
+    <circle cx="700" cy="560" r="52"/>
+    <circle cx="980" cy="300" r="52"/>
+    <circle cx="980" cy="560" r="52"/>
+  </g>
+  <g stroke="#1a7f37" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- documents -->
+    <g transform="translate(420,300)">
+      <path d="M-20 -20 V24 H12"/>
+      <path d="M-14 -26 H10 L18 -18 V18 H-14 Z" fill="#eefaf1"/>
+      <path d="M-6 -12 H8 M-6 -3 H10 M-6 6 H6"/>
+    </g>
+    <!-- speech bubble -->
+    <g transform="translate(420,560)">
+      <path d="M-26 -22 H26 V12 H-4 L-16 24 V12 H-26 Z"/><path d="M-16 -10 H16 M-16 0 H8"/>
+    </g>
+    <!-- sections -->
+    <g transform="translate(700,300)">
+      <rect x="-22" y="-26" width="44" height="13" rx="3"/>
+      <rect x="-22" y="-6" width="44" height="13" rx="3"/>
+      <rect x="-22" y="14" width="44" height="13" rx="3"/>
+    </g>
+    <!-- AI chip -->
+    <g transform="translate(700,560)">
+      <rect x="-20" y="-20" width="40" height="40" rx="6"/>
+      <path d="M-10 -20 V-29 M0 -20 V-29 M10 -20 V-29 M-10 20 V29 M0 20 V29 M10 20 V29 M-20 -10 H-29 M-20 0 H-29 M-20 10 H-29 M20 -10 H29 M20 0 H29 M20 10 H29"/>
+      <text x="0" y="6" text-anchor="middle" font-size="15" font-weight="700" fill="#1a7f37" stroke="none">AI</text>
+    </g>
+    <!-- database -->
+    <g transform="translate(980,300)">
+      <ellipse cx="0" cy="-20" rx="22" ry="8"/><path d="M-22 -20 V20 A22 8 0 0 0 22 20 V-20"/><path d="M-22 0 A22 8 0 0 0 22 0"/>
+    </g>
+    <!-- table -->
+    <g transform="translate(980,560)">
+      <rect x="-24" y="-20" width="48" height="40" rx="4"/><path d="M-24 -6 H24 M-24 7 H24 M-6 -20 V20"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="420" y="378" font-size="17" font-weight="700" fill="#1b1f24">Documents &amp; logs</text>
+    <text x="420" y="400" font-size="13.5" fill="#6e7781">audit, lift log, notes, hours</text>
+    <text x="420" y="638" font-size="17" font-weight="700" fill="#1b1f24">Report form</text>
+    <text x="420" y="660" font-size="13.5" fill="#6e7781">plain words, any time</text>
+
+    <text x="700" y="378" font-size="17" font-weight="700" fill="#1b1f24">Split &amp; date</text>
+    <text x="700" y="400" font-size="13.5" fill="#6e7781">sections tagged with date + trust</text>
+    <text x="700" y="638" font-size="17" font-weight="700" fill="#1b1f24">LLM extracts facts</text>
+    <text x="700" y="660" font-size="13.5" fill="#6e7781">plain words become dated facts</text>
+
+    <text x="980" y="378" font-size="17" font-weight="700" fill="#1b1f24">Passage library</text>
+    <text x="980" y="400" font-size="13.5" fill="#6e7781">searchable, dated, trust-rated</text>
+    <text x="980" y="638" font-size="17" font-weight="700" fill="#1b1f24">Fact log</text>
+    <text x="980" y="660" font-size="13.5" fill="#6e7781">date, feature, status, source</text>
+  </g>
+  <g stroke="#1a7f37" stroke-width="2.5" fill="none" marker-end="url(#aG)">
+    <path d="M474 300 H644"/>
+    <path d="M474 560 H644"/>
+    <path d="M754 300 H924"/>
+    <path d="M754 560 H924"/>
+    <path d="M745 414 L942 526" stroke-width="2" stroke-dasharray="6 4"/>
+  </g>
+  <text x="860" y="460" font-size="12.5" font-style="italic" fill="#1a7f37">log entries become facts</text>
+
+  <!-- ================= question time (blue) ================= -->
+  <g fill="#eef4ff" stroke="#1f6feb" stroke-width="2">
+    <circle cx="1260" cy="300" r="52"/>
+    <circle cx="1260" cy="560" r="52"/>
+    <circle cx="1540" cy="430" r="52"/>
+  </g>
+  <g stroke="#1f6feb" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- magnifier -->
+    <g transform="translate(1260,300)"><circle cx="-4" cy="-4" r="15"/><path d="M7 7 L20 20"/></g>
+    <!-- traffic light -->
+    <g transform="translate(1260,560)">
+      <rect x="-13" y="-28" width="26" height="56" rx="8"/>
+      <circle cx="0" cy="-15" r="6" fill="#1a7f37" stroke="none"/>
+      <circle cx="0" cy="0" r="6" fill="#bf8700" stroke="none"/>
+      <circle cx="0" cy="15" r="6" fill="#cf222e" stroke="none"/>
+    </g>
+    <!-- pin -->
+    <g transform="translate(1540,430)">
+      <path d="M0 30 C-14 14 -22 2 -22 -10 A22 22 0 0 1 22 -10 C22 2 14 14 0 30 Z"/><circle cx="0" cy="-10" r="7"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="1260" y="378" font-size="17" font-weight="700" fill="#1b1f24">Retrieve (RAG)</text>
+    <text x="1260" y="400" font-size="13.5" fill="#6e7781">best passages for this visitor</text>
+    <text x="1260" y="638" font-size="17" font-weight="700" fill="#1b1f24">Status board</text>
+    <text x="1260" y="660" font-size="13.5" fill="#6e7781">latest state + how old it is</text>
+    <text x="1540" y="508" font-size="17" font-weight="700" fill="#1b1f24">Answer (LLM)</text>
+    <text x="1540" y="530" font-size="13.5" fill="#6e7781">combines both, cites sources</text>
+  </g>
+  <g stroke="#1f6feb" stroke-width="2.5" fill="none" marker-end="url(#aB)">
+    <path d="M1034 300 H1204"/>
+    <path d="M1034 560 H1204"/>
+    <path d="M1310 318 L1488 405"/>
+    <path d="M1310 542 L1488 455"/>
+    <path d="M1260 200 V244"/>
+  </g>
+  <text x="1260" y="190" font-size="13.5" font-style="italic" fill="#1f6feb" text-anchor="middle">visitor's question</text>
+
+  <!-- ================= freshness loop ================= -->
+  <path d="M1260 672 V790 H140 V726" stroke="#9a6700" stroke-width="2.5" stroke-dasharray="8 5" fill="none" marker-end="url(#aA)"/>
+  <text x="700" y="780" font-size="14" font-weight="600" fill="#9a6700" text-anchor="middle">Freshness check: when a status expires (e.g. lift not confirmed for 7 days), staff are asked to re-check</text>
+</svg>

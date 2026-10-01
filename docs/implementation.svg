@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1700" height="900" viewBox="0 0 1700 900" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="aS" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8c959f"/></marker>
+    <marker id="aG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1a7f37"/></marker>
+    <marker id="aB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1f6feb"/></marker>
+  </defs>
+
+  <rect width="1700" height="900" fill="#ffffff"/>
+
+  <text x="60" y="66" font-size="30" font-weight="700" fill="#1b1f24">Ecstasy implementation: services and data flow</text>
+  <text x="60" y="96" font-size="16" fill="#6e7781">One Docker Compose stack. AWS Bedrock through boto3 when keys are set; a labelled local fallback when they are not.</text>
+
+  <g font-size="12" font-weight="700" fill="#8c959f" letter-spacing="1.5" text-anchor="middle">
+    <text x="130" y="150">SENSE</text>
+    <text x="380" y="150">STREAM</text>
+    <text x="640" y="150">PROCESS</text>
+    <text x="900" y="150">STORE</text>
+    <text x="1190" y="150">ANSWER</text>
+    <text x="1500" y="150">USE</text>
+  </g>
+
+  <!-- ================= SENSE (simulators + documents) ================= -->
+  <g fill="#f6f8fa" stroke="#57606a" stroke-width="2">
+    <circle cx="130" cy="230" r="30"/>
+    <circle cx="130" cy="380" r="30"/>
+    <circle cx="130" cy="530" r="30"/>
+    <circle cx="130" cy="680" r="30"/>
+  </g>
+  <g stroke="#57606a" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(126,234) scale(0.6)">
+      <rect x="-16" y="-24" width="32" height="48" rx="3"/>
+      <path d="M-6 -5 L0 -13 L6 -5 Z M-6 5 L0 13 L6 5 Z" fill="#57606a" stroke-width="2"/>
+      <path d="M22 -24 A12 12 0 0 1 34 -12 M22 -34 A22 22 0 0 1 44 -12"/>
+      <circle cx="23" cy="-13" r="2.5" fill="#57606a" stroke="none"/>
+    </g>
+    <g transform="translate(132,380) scale(0.6)">
+      <rect x="-24" y="-18" width="36" height="20" rx="3" transform="rotate(-12)"/>
+      <path d="M12 -12 L24 -18 V0 L12 -4"/>
+      <path d="M-8 2 V16 H-22"/>
+    </g>
+    <g transform="translate(130,530) scale(0.62)">
+      <rect x="-22" y="-8" width="44" height="28" rx="4"/><path d="M-9 -8 V-16 H9 V-8"/><path d="M-22 4 H22"/>
+    </g>
+    <g transform="translate(130,680) scale(0.7)">
+      <path d="M-16 -16 V22 H10"/>
+      <path d="M-10 -22 H8 L16 -14 V16 H-10 Z" fill="#f6f8fa"/>
+      <path d="M-4 -10 H8 M-4 -2 H10 M-4 6 H6"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="130" y="280" font-size="15" font-weight="700" fill="#1b1f24">sim-lift</text>
+    <text x="130" y="297" font-size="12.5" fill="#6e7781">NodeMCU telemetry + heartbeat</text>
+    <text x="130" y="430" font-size="15" font-weight="700" fill="#1b1f24">sim-cctv</text>
+    <text x="130" y="447" font-size="12.5" fill="#6e7781">edge CV: gate, path width, seats</text>
+    <text x="130" y="580" font-size="15" font-weight="700" fill="#1b1f24">sim-ops</text>
+    <text x="130" y="597" font-size="12.5" fill="#6e7781">logs, staff checks, reports</text>
+    <text x="130" y="730" font-size="15" font-weight="700" fill="#1b1f24">Venue documents</text>
+    <text x="130" y="747" font-size="12.5" fill="#6e7781">audit, lift log, notes, policy</text>
+  </g>
+
+  <g stroke="#8c959f" stroke-width="2" fill="none" marker-end="url(#aS)">
+    <path d="M162 230 C260 230 270 296 334 299"/>
+    <path d="M162 380 C260 380 270 314 334 311"/>
+    <path d="M162 530 C380 530 480 594 590 598"/>
+    <path d="M162 680 C380 680 480 616 590 612"/>
+  </g>
+  <g font-size="12" font-style="italic" fill="#8c959f" text-anchor="middle">
+    <text x="250" y="220">MQTT, every 5 s</text>
+    <text x="250" y="400">labels only, no video</text>
+    <text x="330" y="522">reports, staff checks (via API)</text>
+    <text x="330" y="700">chunked on start-up</text>
+  </g>
+
+  <!-- ================= STREAM + PROCESS + STORE (green) ================= -->
+  <g fill="#eefaf1" stroke="#1a7f37" stroke-width="2">
+    <circle cx="380" cy="305" r="42"/>
+    <circle cx="640" cy="305" r="46"/>
+    <circle cx="640" cy="605" r="46"/>
+    <circle cx="900" cy="305" r="46"/>
+    <circle cx="900" cy="605" r="46"/>
+  </g>
+  <g stroke="#1a7f37" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- broker -->
+    <g transform="translate(380,305)">
+      <circle r="5" fill="#1a7f37" stroke="none"/>
+      <path d="M-11 -11 A16 16 0 0 0 -11 11 M11 -11 A16 16 0 0 1 11 11"/>
+      <path d="M-20 -20 A28 28 0 0 0 -20 20 M20 -20 A28 28 0 0 1 20 20"/>
+    </g>
+    <!-- merge -->
+    <g transform="translate(640,305)">
+      <path d="M-26 -18 C-8 -18 -8 0 6 0 M-26 0 H6 M-26 18 C-8 18 -8 0 6 0 M6 0 H22"/>
+      <path d="M15 -7 L23 0 L15 7"/>
+    </g>
+    <!-- chunks -->
+    <g transform="translate(640,605)">
+      <rect x="-22" y="-22" width="44" height="11" rx="3"/>
+      <rect x="-22" y="-5" width="34" height="11" rx="3"/>
+      <rect x="-22" y="12" width="40" height="11" rx="3"/>
+    </g>
+    <!-- database -->
+    <g transform="translate(900,305)">
+      <ellipse cx="0" cy="-16" rx="20" ry="7"/>
+      <path d="M-20 -16 V16 A20 7 0 0 0 20 16 V-16"/>
+      <path d="M-20 0 A20 7 0 0 0 20 0"/>
+    </g>
+    <!-- vectors -->
+    <g transform="translate(900,605)">
+      <path d="M-20 -22 V20 H22"/>
+      <path d="M-20 20 L8 -10"/>
+      <circle cx="-4" cy="-14" r="3" fill="#1a7f37" stroke="none"/>
+      <circle cx="14" cy="2" r="3" fill="#1a7f37" stroke="none"/>
+      <circle cx="16" cy="-16" r="3" fill="#1a7f37" stroke="none"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="380" y="368" font-size="16" font-weight="700" fill="#1b1f24">Mosquitto</text>
+    <text x="380" y="386" font-size="12.5" fill="#6e7781">scenario control, retained</text>
+
+    <text x="640" y="372" font-size="16" font-weight="700" fill="#1b1f24">Fusion engine</text>
+    <text x="640" y="390" font-size="12.5" fill="#6e7781">TTL, priority, conflicts</text>
+    <text x="640" y="406" font-size="12.5" fill="#6e7781">no signal = unknown; alerts on change</text>
+
+    <text x="640" y="672" font-size="16" font-weight="700" fill="#1b1f24">Ingestion</text>
+    <text x="640" y="690" font-size="12.5" fill="#6e7781">contextual chunks, LLM fact extraction</text>
+    <text x="640" y="706" font-size="12.5" fill="#6e7781">Titan V2 with content-hash cache</text>
+
+    <text x="900" y="372" font-size="16" font-weight="700" fill="#1b1f24">Postgres</text>
+    <text x="905" y="390" font-size="12.5" fill="#6e7781">observations, status,</text>
+    <text x="905" y="406" font-size="12.5" fill="#6e7781">alerts, answer traces</text>
+
+    <text x="900" y="672" font-size="16" font-weight="700" fill="#1b1f24">Chroma</text>
+    <text x="900" y="690" font-size="12.5" fill="#6e7781">versioned collection per embedder</text>
+  </g>
+  <g stroke="#1a7f37" stroke-width="2.5" fill="none" marker-end="url(#aG)">
+    <path d="M422 305 H588"/>
+    <path d="M686 305 H848"/>
+    <path d="M686 605 H848"/>
+    <path d="M672 572 L864 340"/>
+  </g>
+  <g font-size="12" font-style="italic" fill="#1a7f37" text-anchor="middle">
+    <text x="505" y="295">readings</text>
+    <text x="767" y="295">one state per feature</text>
+    <text x="767" y="595">chunks + vectors</text>
+    <text x="800" y="470" transform="rotate(-50 800 470)">facts</text>
+  </g>
+
+  <!-- ================= ANSWER + USE (blue) ================= -->
+  <g fill="#eef4ff" stroke="#1f6feb" stroke-width="2">
+    <circle cx="1190" cy="455" r="54"/>
+    <circle cx="1500" cy="320" r="46"/>
+    <circle cx="1500" cy="600" r="46"/>
+  </g>
+  <circle cx="1190" cy="705" r="38" fill="#ffffff" stroke="#1f6feb" stroke-width="2" stroke-dasharray="6 5"/>
+  <g stroke="#1f6feb" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <g transform="translate(1190,455)">
+      <rect x="-20" y="-20" width="40" height="40" rx="6"/>
+      <path d="M-10 -20 V-29 M0 -20 V-29 M10 -20 V-29 M-10 20 V29 M0 20 V29 M10 20 V29 M-20 -10 H-29 M-20 0 H-29 M-20 10 H-29 M20 -10 H29 M20 0 H29 M20 10 H29"/>
+      <text x="0" y="6" text-anchor="middle" font-size="13" font-weight="700" fill="#1f6feb" stroke="none">RAG</text>
+    </g>
+    <!-- cloud -->
+    <g transform="translate(1190,708)">
+      <path d="M-20 12 A9 9 0 0 1 -17 -5 A13 13 0 0 1 6 -12 A11 11 0 0 1 20 1 A8 8 0 0 1 17 12 Z"/>
+    </g>
+    <!-- phone -->
+    <g transform="translate(1500,320)">
+      <rect x="-14" y="-26" width="28" height="52" rx="5"/><path d="M-5 18 H5"/>
+    </g>
+    <!-- bell -->
+    <g transform="translate(1500,596)">
+      <path d="M-16 10 V-4 A16 16 0 0 1 16 -4 V10 L20 16 H-20 Z"/><path d="M-5 21 A5 5 0 0 0 5 21"/>
+    </g>
+  </g>
+  <g text-anchor="middle">
+    <text x="1190" y="533" font-size="17" font-weight="700" fill="#1b1f24">FastAPI answer pipeline</text>
+    <text x="1190" y="553" font-size="13" fill="#6e7781">rules, hybrid retrieval, rerank</text>
+    <text x="1190" y="570" font-size="13" fill="#6e7781">Claude answer, validators, trace</text>
+
+    <text x="1500" y="386" font-size="16" font-weight="700" fill="#1b1f24">Visitor PWA</text>
+    <text x="1500" y="404" font-size="12.5" fill="#6e7781">Next.js: plan, cited answer, live board</text>
+
+    <text x="1500" y="666" font-size="16" font-weight="700" fill="#1b1f24">Staff console</text>
+    <text x="1500" y="684" font-size="12.5" fill="#6e7781">daily check, alerts, listing health</text>
+  </g>
+  <g text-anchor="start">
+    <text x="1242" y="700" font-size="15" font-weight="700" fill="#1b1f24">AWS Bedrock (boto3)</text>
+    <text x="1242" y="718" font-size="12.5" fill="#6e7781">Titan V2, Claude, Rerank</text>
+    <text x="1242" y="734" font-size="12.5" fill="#6e7781">no keys: local fallback, labelled</text>
+  </g>
+  <g font-size="10.5" font-weight="700" fill="#ffffff" text-anchor="middle">
+    <rect x="1405" y="418" width="44" height="20" rx="10" fill="#1a7f37"/><text x="1427" y="432">GO</text>
+    <rect x="1455" y="418" width="72" height="20" rx="10" fill="#bf8700"/><text x="1491" y="432">CAUTION</text>
+    <rect x="1533" y="418" width="62" height="20" rx="10" fill="#cf222e"/><text x="1564" y="432">NO-GO</text>
+  </g>
+  <g stroke="#1f6feb" stroke-width="2.5" fill="none" marker-end="url(#aB)">
+    <path d="M946 305 C1060 305 1080 432 1134 440"/>
+    <path d="M946 605 C1060 605 1080 478 1134 470"/>
+    <path d="M1242 438 L1454 336"/>
+    <path d="M1242 472 L1454 584"/>
+  </g>
+  <path d="M1190 582 V664" stroke="#1f6feb" stroke-width="2.5" fill="none" stroke-dasharray="6 5" marker-start="url(#aB)" marker-end="url(#aB)"/>
+  <g font-size="12" font-style="italic" fill="#1f6feb" text-anchor="middle">
+    <text x="1040" y="292">status (LISTEN/NOTIFY)</text>
+    <text x="1040" y="628">dense + BM25</text>
+    <text x="1350" y="372" transform="rotate(-26 1350 372)">SSE: progress, live status</text>
+    <text x="1350" y="546" transform="rotate(28 1350 546)">SSE: alerts</text>
+  </g>
+
+  <!-- ================= answer pipeline strip ================= -->
+  <rect x="60" y="800" width="1580" height="56" rx="10" fill="#fffbea" stroke="#d4a72c" stroke-width="1.5"/>
+  <text x="850" y="834" font-size="14" fill="#5c3c00" text-anchor="middle"><tspan font-weight="700">Answer pipeline: </tspan>visit time + desk hours  &#8594;  rule checks on fused status  &#8594;  query plan  &#8594;  Titan dense + BM25, RRF  &#8594;  aspect quotas + rerank  &#8594;  Claude (tool schema)  &#8594;  validators + verdict floor  &#8594;  else rule-based answer</text>
+</svg>

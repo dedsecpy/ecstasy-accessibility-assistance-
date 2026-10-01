@@ -1,0 +1,5 @@
+streamlit>=1.57
+rank-bm25>=0.2.2
+openai>=1.40
+python-dotenv>=1.0
+pandas>=2.0

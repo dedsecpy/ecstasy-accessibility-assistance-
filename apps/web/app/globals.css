@@ -1,0 +1,431 @@
+@import "tailwindcss";
+
+/*
+ * Ecstasy design system: iOS-style materials, type and controls.
+ * Every text/background pair below meets WCAG 2.2 AA (4.5:1), and control boundaries meet 3:1,
+ * in both light and dark appearance.
+ */
+@theme {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI Variable Text",
+    "Segoe UI", system-ui, Roboto, sans-serif;
+
+  --color-bg: #f2f2f7;
+  --color-card: #ffffff;
+  --color-card2: #f2f2f7;
+  --color-surface: #f2f2f7;
+  --color-ink: #000000;
+  --color-muted: #6c6c70;
+  --color-line: #d1d1d6;
+  --color-field: #8e8e93;
+  --color-brand: #0066cc;
+  --color-fill: #0071e3;
+  --color-brand-bg: #e8f1fc;
+  --color-ok: #1e7b34;
+  --color-ok-bg: #e5f6e9;
+  --color-warn: #9a4d00;
+  --color-warn-bg: #fff2dd;
+  --color-bad: #c41e1a;
+  --color-bad-bg: #fde8e7;
+  --color-unsure: #4b44c8;
+  --color-unsure-bg: #eeedfc;
+  --color-switch: #248a3d;
+}
+
+/* data-theme is set before first paint from the user's choice (System follows prefers-color-scheme). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #000000;
+  --color-card: #1c1c1e;
+  --color-card2: #2c2c2e;
+  --color-surface: #2c2c2e;
+  --color-ink: #ffffff;
+  --color-muted: #aeaeb2;
+  --color-line: #38383a;
+  --color-field: #6c6c70;
+  --color-brand: #409cff;
+  --color-fill: #0071e3;
+  --color-brand-bg: #0d2a4d;
+  --color-ok: #32d74b;
+  --color-ok-bg: #0e2e16;
+  --color-warn: #ffb340;
+  --color-warn-bg: #3a2705;
+  --color-bad: #ff6961;
+  --color-bad-bg: #3b0f0d;
+  --color-unsure: #a5a1ff;
+  --color-unsure-bg: #221f4d;
+  --color-switch: #30d158;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-muted: #3a3a3c;
+    --color-line: #6c6c70;
+    --color-field: #3a3a3c;
+  }
+  .card, .list, .badge, .segmented {
+    outline: 1px solid var(--color-field);
+    outline-offset: -1px;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root[data-theme="dark"] {
+    --color-muted: #d1d1d6;
+    --color-line: #8e8e93;
+    --color-field: #aeaeb2;
+  }
+}
+
+/* ------------------------------------------------------------------ base */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  color-scheme: light;
+  /* Keep focused elements clear of the sticky top bar and floating tab bar (WCAG 2.4.11). */
+  scroll-padding-top: 76px;
+  scroll-padding-bottom: 120px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.47;
+  letter-spacing: -0.011em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-fill) 25%, transparent);
+}
+
+.tap {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.sr-only-focusable:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ components */
+
+@layer components {
+  /* Translucent "glass" material for bars, sidebars and the tab bar. */
+  .glass {
+    background: color-mix(in srgb, var(--color-card) 72%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    backdrop-filter: saturate(180%) blur(24px);
+  }
+
+  .large-title {
+    font-size: 34px;
+    line-height: 41px;
+    font-weight: 700;
+    letter-spacing: -0.022em;
+  }
+
+  .section-title {
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .section-footer {
+    padding: 0 16px;
+    font-size: 13px;
+    line-height: 18px;
+    color: var(--color-muted);
+  }
+
+  .card {
+    background: var(--color-card);
+    border-radius: 22px;
+  }
+
+  /* Inset grouped list: rows separated by hairlines inset from the leading edge. */
+  .list {
+    background: var(--color-card);
+    border-radius: 22px;
+    overflow: hidden;
+  }
+  .list > * {
+    position: relative;
+  }
+  .list > * + *::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: var(--inset, 16px);
+    height: 1px;
+    background: var(--color-line);
+    transform: scaleY(0.5);
+    transform-origin: top;
+  }
+
+  .row {
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  button.row, a.row, label.row {
+    transition: background-color 0.15s;
+  }
+  button.row:active, a.row:active, label.row:active {
+    background: color-mix(in srgb, var(--color-ink) 6%, transparent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 20px;
+    border-radius: 9999px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    transition: transform 0.15s ease, opacity 0.15s ease, background-color 0.2s ease;
+    user-select: none;
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    min-height: 52px;
+    background: var(--color-fill);
+    color: #ffffff;
+    box-shadow: 0 6px 20px -8px color-mix(in srgb, var(--color-fill) 70%, transparent);
+  }
+  /* Solid when disabled: it often floats over content, where a translucent fill would muddle the text behind it. */
+  .btn-primary:disabled {
+    opacity: 1;
+    background: var(--color-card2);
+    color: var(--color-muted);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-field) 45%, transparent);
+  }
+  .btn-primary:disabled[aria-busy="true"] {
+    background: var(--color-fill);
+    color: #ffffff;
+    box-shadow: none;
+  }
+  .btn-tinted {
+    background: var(--color-brand-bg);
+    color: var(--color-brand);
+  }
+  .btn-gray {
+    background: var(--color-card2);
+    color: var(--color-ink);
+  }
+  .btn-sm {
+    padding: 0 14px;
+    font-size: 15px;
+  }
+
+  .field {
+    width: 100%;
+    border: 1px solid var(--color-field);
+    border-radius: 14px;
+    background: var(--color-card);
+    color: var(--color-ink);
+    padding: 12px 14px;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+  .field::placeholder {
+    color: var(--color-muted);
+  }
+  .field:focus-visible {
+    outline-offset: 1px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 9999px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  /* Segmented control. */
+  .segmented {
+    display: flex;
+    width: 100%;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 12px;
+    background: var(--color-card2);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-field) 45%, transparent);
+  }
+  .segmented > button {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    min-height: 40px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-ink);
+    transition: background-color 0.2s, box-shadow 0.2s;
+  }
+  .segmented > button[aria-checked="true"] {
+    background: var(--color-fill);
+    color: #ffffff;
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Switch (the whole row is the control; the track is decorative). */
+  .switch-track {
+    position: relative;
+    flex-shrink: 0;
+    width: 51px;
+    height: 31px;
+    border-radius: 9999px;
+    background: var(--color-card2);
+    box-shadow: inset 0 0 0 1.5px var(--color-field);
+    transition: background-color 0.25s, box-shadow 0.25s;
+  }
+  .switch-track::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 27px;
+    height: 27px;
+    border-radius: 9999px;
+    background: #ffffff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 1px 1px rgba(0, 0, 0, 0.16);
+    transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  [aria-checked="true"] > .switch-track {
+    background: var(--color-switch);
+    box-shadow: none;
+  }
+  [aria-checked="true"] > .switch-track::after {
+    transform: translateX(20px);
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-top-color: currentColor;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .fade-in {
+    animation: fade-up 0.4s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  .menu-pop {
+    animation: sheet-pop 0.22s cubic-bezier(0.32, 0.72, 0, 1) both;
+  }
+
+  /* Sheet: slides up from the bottom on phones, a centred card from tablet width up. */
+  dialog.sheet {
+    position: fixed;
+    inset: auto 0 0 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 640px;
+    max-height: 88dvh;
+    border: none;
+    padding: 0;
+    border-radius: 28px 28px 0 0;
+    background: var(--color-card);
+    color: var(--color-ink);
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.22);
+  }
+  dialog.sheet[open] {
+    animation: sheet-up 0.38s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  dialog.sheet::backdrop {
+    background: rgba(0, 0, 0, 0.35);
+  }
+  @media (min-width: 768px) {
+    dialog.sheet {
+      inset: 0;
+      margin: auto;
+      height: fit-content;
+      max-height: 80dvh;
+      border-radius: 28px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+    }
+    dialog.sheet[open] {
+      animation: sheet-pop 0.28s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes sheet-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "riverside_hall",
+  "name": "Riverside Hall",
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2024-03-10",
+  "listing_claims": [
+    {"id": "wheelchair_accessible", "text": "Wheelchair accessible", "features": ["main_entrance", "side_gate", "ramp", "courtyard_path", "lift"]},
+    {"id": "lift_all_floors", "text": "Lift to all floors", "features": ["lift"]},
+    {"id": "accessible_toilet", "text": "Accessible toilet", "features": ["toilet"]},
+    {"id": "step_free", "text": "Step-free access", "features": ["main_entrance", "side_gate", "ramp", "courtyard_path"]},
+    {"id": "hearing_loop", "text": "Hearing loop in the Main Hall", "features": ["hearing_loop"]},
+    {"id": "assistance", "text": "Assistance available", "features": ["assistance_desk", "intercom"]}
+  ],
+  "assistance_hours": {
+    "mon": ["10:00", "17:00"],
+    "tue": ["10:00", "17:00"],
+    "wed": ["10:00", "17:00"],
+    "thu": ["10:00", "17:00"],
+    "fri": ["10:00", "17:00"],
+    "sat": ["10:00", "14:00"],
+    "sun": null
+  },
+  "assistance_phone": "01234 567 890",
+  "prebook_hours": 48,
+  "locations": {
+    "Main Hall": {"floor": 1, "needs_lift": true},
+    "Ground Floor Gallery": {"floor": 0, "needs_lift": false},
+    "Courtyard": {"floor": 0, "needs_lift": false},
+    "Foyer": {"floor": 0, "needs_lift": false}
+  },
+  "devices": {
+    "lifts": [{"id": "lift-1", "feature": "lift", "label": "Foyer lift (Ground - First)"}],
+    "cameras": [
+      {"id": "cam-gate", "feature": "side_gate", "label": "Side Gate, Mill Lane"},
+      {"id": "cam-courtyard", "feature": "courtyard_path", "label": "Courtyard path"},
+      {"id": "cam-foyer", "feature": "seating", "label": "Foyer seating"}
+    ]
+  },
+  "events": [
+    {"id": "autumn_lecture", "name": "Autumn Lecture Series: Rivers and Cities", "start": "2026-10-08T19:00", "doors": "2026-10-08T18:30", "location": "Main Hall"},
+    {"id": "community_fair", "name": "Community Fair", "start": "2026-10-10T11:00", "doors": "2026-10-10T11:00", "location": "Courtyard"},
+    {"id": "history_talk", "name": "Local History Talk", "start": "2026-10-18T14:00", "doors": "2026-10-18T13:30", "location": "Ground Floor Gallery"}
+  ]
+}

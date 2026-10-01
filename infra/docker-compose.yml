@@ -1,0 +1,130 @@
+# Ecstasy: full stack.  Run from the repo root:
+#   docker compose -f infra/docker-compose.yml up --build
+# Web app: http://localhost:3000   API docs: http://localhost:8000/docs
+name: nimbus
+
+x-python: &python
+  build:
+    context: ..
+    dockerfile: services/python.Dockerfile
+  image: nimbus-python:latest
+  restart: unless-stopped
+  env_file:
+    - path: ../.env
+      required: false
+  environment: &pyenv
+    DATABASE_URL: postgresql://nimbus:nimbus@postgres:5432/nimbus
+    MQTT_HOST: mosquitto
+    MQTT_PORT: "1883"
+    CHROMA_HOST: chroma
+    CHROMA_PORT: "8000"
+    API_URL: http://api:8000
+    # Demo timing: devices publish every 5 s, so live sources expire after 20 s / 60 s of silence.
+    SIM_INTERVAL_S: "5"
+    SENSOR_TTL_S: "20"
+    CCTV_TTL_S: "60"
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: nimbus
+      POSTGRES_PASSWORD: nimbus
+      POSTGRES_DB: nimbus
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nimbus -d nimbus"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  chroma:
+    image: chromadb/chroma:latest
+    restart: unless-stopped
+    environment:
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "FALSE"
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma-data:/data
+      - chroma-data:/chroma/chroma
+
+  worker:
+    <<: *python
+    working_dir: /app/services/worker
+    command: ["python", "-m", "worker.main"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+      chroma:
+        condition: service_started
+
+  api:
+    <<: *python
+    working_dir: /app/services/api
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mosquitto:
+        condition: service_started
+      chroma:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+
+  sim-lift:
+    <<: *python
+    working_dir: /app/services/sim-lift
+    command: ["python", "sim_lift.py"]
+    depends_on:
+      - mosquitto
+
+  sim-cctv:
+    <<: *python
+    working_dir: /app/services/sim-cctv
+    command: ["python", "sim_cctv.py"]
+    depends_on:
+      - mosquitto
+
+  sim-ops:
+    <<: *python
+    working_dir: /app/services/sim-ops
+    command: ["python", "sim_ops.py"]
+    depends_on:
+      api:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ../apps/web
+    image: nimbus-web:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  pg-data:
+  chroma-data:

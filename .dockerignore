@@ -1,0 +1,11 @@
+.venv
+**/__pycache__
+**/*.pyc
+.git
+.env
+legacy
+docs
+apps/web/node_modules
+apps/web/.next
+eval/results
+*.docx

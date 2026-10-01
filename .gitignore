@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+legacy/.streamlit/secrets.toml
+data/venues/*/live_reports.jsonl
+data/venues/*/live_facts.jsonl
+node_modules/
+apps/web/.next/
+apps/web/out/
+eval/results/
+*.tsbuildinfo
+*.log
+.DS_Store
+Thumbs.db
+~$*
