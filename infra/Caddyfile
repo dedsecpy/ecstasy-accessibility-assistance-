@@ -1,0 +1,10 @@
+# Public entry point on the server: HTTPS (automatic Let's Encrypt certificate) for SITE_ADDRESS.
+# /api/* goes to FastAPI, everything else to the Next.js app, so the browser stays on one origin.
+{$SITE_ADDRESS} {
+	handle /api/* {
+		reverse_proxy api:8000
+	}
+	handle {
+		reverse_proxy web:3000
+	}
+}

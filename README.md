@@ -88,6 +88,24 @@ publishing straight away. Stop with `Ctrl+C`; `docker compose -f infra/docker-co
 Running the web app on its own with `npm run dev` in `apps/web`? Set `NEXT_PUBLIC_API_PORT=8000` so it calls the API
 on port 8000 of the same host. Without it the app calls `/api/...` on its own origin, which is how Vercel serves it.
 
+### Deploy on one AWS EC2 server
+
+Runs the whole stack (including the worker, simulators and databases) on one instance, with an HTTPS link from Caddy.
+
+1. Launch Amazon Linux 2023, `t3.medium` (or `t3.small`; the script adds 4 GB swap), 30 GB disk, security group
+   allowing HTTP, HTTPS and SSH.
+2. Under **Advanced details > User data** paste:
+   ```bash
+   #!/bin/bash
+   curl -fsSL https://raw.githubusercontent.com/dedsecpy/ecstasy-accessibility-assistance-/main/infra/aws/user-data.sh | bash
+   ```
+3. After about 10 minutes the app is at `https://<public-ip-with-dashes>.sslip.io` (for 13.234.5.6:
+   `https://13-234-5-6.sslip.io`). Progress: `sudo tail -f /var/log/ecstasy-setup.log`.
+4. Add AI keys: `sudo nano /opt/ecstasy/.env`, then `sudo /opt/ecstasy/infra/aws/deploy.sh`.
+
+To ship new code: `git push`, then run `sudo /opt/ecstasy/infra/aws/deploy.sh` on the server. The public IP changes
+if the instance is stopped and started; attach an Elastic IP to keep the link fixed.
+
 ### Deploy on Vercel
 
 `vercel.json` defines two services on one domain:
