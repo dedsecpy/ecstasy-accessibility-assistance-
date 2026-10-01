@@ -21,7 +21,7 @@ esac
 plugins=/usr/local/lib/docker/cli-plugins
 mkdir -p "$plugins"
 curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-$arch" -o "$plugins/docker-compose"
-bx=$(curl -fsSL https://api.github.com/repos/docker/buildx/releases/latest | grep -m1 '"tag_name"' | cut -d'"' -f4)
+bx=$(basename "$(curl -fsSL -o /dev/null -w '%{url_effective}' https://github.com/docker/buildx/releases/latest)")
 curl -fsSL "https://github.com/docker/buildx/releases/download/$bx/buildx-$bx.linux-$barch" -o "$plugins/docker-buildx"
 chmod +x "$plugins/docker-compose" "$plugins/docker-buildx"
 
