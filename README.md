@@ -79,11 +79,38 @@ docker compose -f infra/docker-compose.yml up --build
 ```
 
 - Web app: http://localhost:3000 (on a phone on the same network: `http://<your-PC-IP>:3000`)
-- API docs: http://localhost:8000/docs
+- API docs: http://localhost:8000/api/docs
 - Chroma: http://localhost:8001, MQTT: localhost:1883, Postgres: localhost:5432 (nimbus / nimbus)
 
 On first start the worker seeds the venue, fuses its history and indexes the documents; the simulators start
 publishing straight away. Stop with `Ctrl+C`; `docker compose -f infra/docker-compose.yml down -v` also wipes data.
+
+Running the web app on its own with `npm run dev` in `apps/web`? Set `NEXT_PUBLIC_API_PORT=8000` so it calls the API
+on port 8000 of the same host. Without it the app calls `/api/...` on its own origin, which is how Vercel serves it.
+
+### Deploy on Vercel
+
+`vercel.json` defines two services on one domain:
+
+| Service | Source | Public path |
+|---|---|---|
+| `web` | `apps/web` (Next.js) | everything not under `/api` |
+| `api` | `services/api/Dockerfile.vercel` (FastAPI container, build context = repo root for `nimbus_core`) | `/api/*` |
+
+The worker, the three simulators, Postgres, Mosquitto and Chroma are long-running processes and are not Vercel
+services. Point the `api` service at hosted equivalents with project environment variables, plus the AI provider
+keys above:
+
+| Variable | Purpose |
+|---|---|
+| `DATABASE_URL` | Hosted Postgres, e.g. Neon (`...?sslmode=require`) |
+| `MQTT_HOST`, `MQTT_PORT`, `MQTT_USERNAME`, `MQTT_PASSWORD`, `MQTT_TLS` | Hosted broker, e.g. HiveMQ Cloud (port 8883, `MQTT_TLS=true`) |
+| `CHROMA_HOST`, `CHROMA_PORT`, `CHROMA_SSL`, `CHROMA_API_KEY`, `CHROMA_TENANT`, `CHROMA_DATABASE` | Chroma Cloud or a self-hosted Chroma |
+
+Run the worker (and the simulators, if you want live demo data) somewhere that keeps processes up, with the same
+variables. The worker seeds the venue and builds the search index, so run it once before the first visit; `sim-ops`
+needs `API_URL=https://<your-vercel-domain>`. The live status stream is SSE, so it reconnects whenever a function
+reaches its maximum duration.
 
 ### AI provider
 

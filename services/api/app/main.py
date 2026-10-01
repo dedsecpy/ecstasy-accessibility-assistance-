@@ -43,7 +43,15 @@ async def lifespan(_app: FastAPI):
     await broadcaster.stop()
 
 
-app = FastAPI(title="Ecstasy API", version="0.2.0", lifespan=lifespan)
+app = FastAPI(
+    title="Ecstasy API",
+    version="0.2.0",
+    lifespan=lifespan,
+    # Only /api/* reaches this service on the shared Vercel domain; everything else goes to the web app.
+    docs_url="/api/docs",
+    openapi_url="/api/openapi.json",
+    redoc_url=None,
+)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 

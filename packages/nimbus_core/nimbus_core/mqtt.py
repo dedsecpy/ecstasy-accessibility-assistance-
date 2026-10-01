@@ -18,6 +18,11 @@ def make_client(name: str, on_message: Callable[[str, dict[str, Any]], None] | N
                 subscriptions: list[str] | None = None) -> mqtt.Client:
     client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=f"{name}-{uuid.uuid4().hex[:6]}")
     client.reconnect_delay_set(min_delay=1, max_delay=10)
+    s = get_settings()
+    if s.mqtt_username:
+        client.username_pw_set(s.mqtt_username, s.mqtt_password or None)
+    if s.mqtt_tls:
+        client.tls_set()
 
     def _on_connect(c, _userdata, _flags, reason_code, _props):
         log.info("%s connected to MQTT (%s)", name, reason_code)
@@ -39,7 +44,6 @@ def make_client(name: str, on_message: Callable[[str, dict[str, Any]], None] | N
 
     client.on_connect = _on_connect
     client.on_message = _on_message
-    s = get_settings()
     while True:
         try:
             client.connect(s.mqtt_host, s.mqtt_port, keepalive=30)
@@ -59,4 +63,6 @@ def publish_once(topic: str, payload: dict[str, Any], retain: bool = False) -> N
     import paho.mqtt.publish as publish
 
     s = get_settings()
-    publish.single(topic, json.dumps(payload), qos=1, retain=retain, hostname=s.mqtt_host, port=s.mqtt_port)
+    auth = {"username": s.mqtt_username, "password": s.mqtt_password} if s.mqtt_username else None
+    publish.single(topic, json.dumps(payload), qos=1, retain=retain, hostname=s.mqtt_host, port=s.mqtt_port,
+                   auth=auth, tls={} if s.mqtt_tls else None)

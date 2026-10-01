@@ -1,6 +1,6 @@
 # Ecstasy: full stack.  Run from the repo root:
 #   docker compose -f infra/docker-compose.yml up --build
-# Web app: http://localhost:3000   API docs: http://localhost:8000/docs
+# Web app: http://localhost:3000   API docs: http://localhost:8000/api/docs
 name: nimbus
 
 x-python: &python
@@ -118,6 +118,8 @@ services:
   web:
     build:
       context: ../apps/web
+      args:
+        NEXT_PUBLIC_API_PORT: "8000"
     image: nimbus-web:latest
     restart: unless-stopped
     ports:

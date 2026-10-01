@@ -19,13 +19,26 @@ def _int(name: str, default: int) -> int:
         return default
 
 
+def _bool(name: str, default: bool = False) -> bool:
+    return _env(name, "true" if default else "false").lower() in ("1", "true", "yes")
+
+
 @dataclass(frozen=True)
 class Settings:
-    database_url: str = field(default_factory=lambda: _env("DATABASE_URL", "postgresql://nimbus:nimbus@localhost:5432/nimbus"))
+    database_url: str = field(default_factory=lambda: _env("DATABASE_URL", "postgresql://nimbus:nimbus@localhost:5432/nimbus"), repr=False)
     mqtt_host: str = field(default_factory=lambda: _env("MQTT_HOST", "localhost"))
     mqtt_port: int = field(default_factory=lambda: _int("MQTT_PORT", 1883))
+    # Hosted brokers (HiveMQ Cloud, EMQX Cloud) need a login and TLS, usually on port 8883.
+    mqtt_username: str = field(default_factory=lambda: _env("MQTT_USERNAME"))
+    mqtt_password: str = field(default_factory=lambda: _env("MQTT_PASSWORD"), repr=False)
+    mqtt_tls: bool = field(default_factory=lambda: _bool("MQTT_TLS"))
     chroma_host: str = field(default_factory=lambda: _env("CHROMA_HOST", "localhost"))
     chroma_port: int = field(default_factory=lambda: _int("CHROMA_PORT", 8000))
+    # Chroma Cloud: CHROMA_HOST=api.trychroma.com, CHROMA_PORT=443, CHROMA_SSL=true, plus key, tenant and database.
+    chroma_ssl: bool = field(default_factory=lambda: _bool("CHROMA_SSL"))
+    chroma_api_key: str = field(default_factory=lambda: _env("CHROMA_API_KEY"), repr=False)
+    chroma_tenant: str = field(default_factory=lambda: _env("CHROMA_TENANT"))
+    chroma_database: str = field(default_factory=lambda: _env("CHROMA_DATABASE"))
     data_dir: Path = field(default_factory=lambda: Path(_env("NIMBUS_DATA_DIR", "data")))
 
     # auto: use the AI provider when its credentials are present and a probe call succeeds; else local fallback.

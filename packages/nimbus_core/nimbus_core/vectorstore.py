@@ -20,10 +20,17 @@ class VectorStore:
         import chromadb
 
         s = get_settings()
+        opts: dict[str, Any] = {"ssl": s.chroma_ssl}
+        if s.chroma_api_key:
+            opts["headers"] = {"x-chroma-token": s.chroma_api_key}
+        if s.chroma_tenant:
+            opts["tenant"] = s.chroma_tenant
+        if s.chroma_database:
+            opts["database"] = s.chroma_database
         deadline = time.time() + wait_s
         while True:
             try:
-                self.client = chromadb.HttpClient(host=s.chroma_host, port=s.chroma_port)
+                self.client = chromadb.HttpClient(host=s.chroma_host, port=s.chroma_port, **opts)
                 self.client.heartbeat()
                 break
             except Exception as e:  # noqa: BLE001

@@ -2,11 +2,18 @@ import type { Alert, AskRequest, AskResult, FeatureState, Health, Venue } from "
 
 export const VENUE_ID = process.env.NEXT_PUBLIC_VENUE_ID || "riverside_hall";
 
-/** The API runs on port 8000 of the same host the phone loaded the app from. */
+/**
+ * On Vercel the API shares the web app's domain under /api, so requests stay same-origin.
+ * Docker Compose and plain `next dev` set NEXT_PUBLIC_API_PORT=8000: the API then runs on that
+ * port of the same host the phone loaded the app from.
+ */
 export function apiBase(): string {
   if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "");
-  if (typeof window !== "undefined") return `${window.location.protocol}//${window.location.hostname}:8000`;
-  return "http://localhost:8000";
+  const port = process.env.NEXT_PUBLIC_API_PORT;
+  if (typeof window !== "undefined") {
+    return port ? `${window.location.protocol}//${window.location.hostname}:${port}` : "";
+  }
+  return `http://localhost:${port || 8000}`;
 }
 
 async function json<T>(path: string, init?: RequestInit): Promise<T> {
