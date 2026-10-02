@@ -8,7 +8,9 @@ const SELECTOR = ".enter, .enter-logo";
  * Starts the landing entrance once the wordmark has loaded, so the feathers fade in instead of
  * popping in after their animation has finished. The inline script starts it during HTML parsing
  * (before hydration, which is slow on phones); the effect covers client-side navigation, where
- * inline scripts do not run. Replays when a phone restores the tab from memory.
+ * inline scripts do not run. Replays when a phone restores the tab from memory, and when the
+ * layout switches between phone and desktop (rotation, or a browser's mobile view, which resizes
+ * without reloading).
  */
 const BOOT = `(function(){var s=document.currentScript.parentElement,i=s.querySelector(".enter-logo");function go(){s.classList.add("is-ready")}if(!i||i.complete)go();else{i.addEventListener("load",go);i.addEventListener("error",go);setTimeout(go,2500)}})();`;
 
@@ -28,20 +30,22 @@ export function LandingStage({ className = "", children }: { className?: string;
       t = setTimeout(go, 2500);
     }
 
-    const replay = (e: PageTransitionEvent) => {
-      if (!e.persisted) return;
+    const restart = () =>
       stage.querySelectorAll<HTMLElement>(SELECTOR).forEach((el) => {
         el.style.animation = "none";
         void el.offsetWidth;
         el.style.animation = "";
       });
-    };
-    window.addEventListener("pageshow", replay);
+    const onPageShow = (e: PageTransitionEvent) => e.persisted && restart();
+    const layout = window.matchMedia("(min-width: 640px)");
+    window.addEventListener("pageshow", onPageShow);
+    layout.addEventListener("change", restart);
     return () => {
       clearTimeout(t);
       img?.removeEventListener("load", go);
       img?.removeEventListener("error", go);
-      window.removeEventListener("pageshow", replay);
+      window.removeEventListener("pageshow", onPageShow);
+      layout.removeEventListener("change", restart);
     };
   }, []);
 
