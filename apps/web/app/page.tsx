@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { preload } from "react-dom";
 import { Icon, type IconName } from "@/components/Icon";
+import { LandingStage } from "@/components/LandingStage";
 import { Wordmark } from "@/components/ui";
 
 const POINTS: { icon: IconName; title: string; text: string }[] = [
@@ -12,8 +14,12 @@ const POINTS: { icon: IconName; title: string; text: string }[] = [
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
 export default function Landing() {
+  preload("/brand/wordmark.webp", { as: "image", fetchPriority: "high" });
   return (
-    <div className="relative isolate flex min-h-dvh flex-col overflow-hidden">
+    <LandingStage className="relative isolate flex min-h-dvh flex-col overflow-hidden">
+      <noscript>
+        <style>{".landing .enter, .landing .enter-logo { animation: none; }"}</style>
+      </noscript>
       <div aria-hidden="true" className="landing-glow float-slow left-[-18%] top-[-14%] h-[55vmax] w-[55vmax] bg-[#3d8bff]" />
       <div aria-hidden="true" className="landing-glow float-slow bottom-[-24%] right-[-16%] h-[50vmax] w-[50vmax] bg-[#8cc2ff] [animation-delay:-4.5s]" />
 
@@ -63,6 +69,6 @@ export default function Landing() {
           I work at a venue
         </Link>
       </main>
-    </div>
+    </LandingStage>
   );
 }

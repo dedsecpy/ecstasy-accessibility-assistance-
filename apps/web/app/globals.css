@@ -351,13 +351,18 @@ body {
     animation: sheet-pop 0.22s cubic-bezier(0.32, 0.72, 0, 1) both;
   }
 
-  /* Landing: the wordmark settles in, then each line follows after its --d delay. */
+  /* Landing: the wordmark settles in, then each line follows after its --d delay.
+     Held (first frame showing) until LandingStage marks the wordmark as loaded. */
   .enter-logo {
-    animation: enter-logo 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: enter-logo 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .enter {
-    animation: enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: enter 1s cubic-bezier(0.22, 1, 0.36, 1) both;
     animation-delay: var(--d, 0ms);
+  }
+  .landing:not(.is-ready) .enter,
+  .landing:not(.is-ready) .enter-logo {
+    animation-play-state: paused;
   }
   .float-slow {
     animation: float 9s ease-in-out infinite;
@@ -428,8 +433,8 @@ body {
 @keyframes enter {
   from {
     opacity: 0;
-    transform: translateY(14px);
-    filter: blur(6px);
+    transform: translateY(18px);
+    filter: blur(8px);
   }
   to {
     opacity: 1;
@@ -440,13 +445,21 @@ body {
 @keyframes enter-logo {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.96);
-    filter: blur(14px);
+    transform: translateY(28px) scale(0.92);
+    filter: blur(18px);
   }
   to {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+}
+@keyframes fade-in-only {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 @keyframes float {
@@ -483,5 +496,11 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  /* No movement or blur, but keep a gentle fade so the landing still eases in. */
+  .landing .enter,
+  .landing .enter-logo {
+    animation-name: fade-in-only !important;
+    animation-duration: 0.8s !important;
   }
 }
