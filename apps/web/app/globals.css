@@ -382,6 +382,19 @@ body {
   :root[data-theme="dark"] .landing-glow {
     opacity: 0.22;
   }
+  /* Script tagline: a soft silver-blue sheen like the feathered wordmark. Padding keeps swashes inside the clipped background. */
+  .script-line {
+    padding: 0.08em 0.2em 0.18em;
+    background: linear-gradient(100deg, var(--color-ink) 15%, color-mix(in srgb, var(--color-brand) 70%, var(--color-ink)) 50%, var(--color-ink) 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 400;
+    letter-spacing: 0.005em;
+  }
+  :root[data-theme="dark"] .script-line {
+    filter: drop-shadow(0 0 18px color-mix(in srgb, var(--color-brand) 35%, transparent));
+  }
 
   /* Icon radio tiles (mobility picker). */
   .pick-tile {

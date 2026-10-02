@@ -1,3 +1,4 @@
+import { Parisienne } from "next/font/google";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { preload } from "react-dom";
@@ -10,6 +11,8 @@ const POINTS: { icon: IconName; label: string }[] = [
   { icon: "map", label: "Fits how you travel" },
   { icon: "shield", label: "Honest when unsure" },
 ];
+
+const script = Parisienne({ subsets: ["latin"], weight: "400", display: "swap" });
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
 
@@ -34,9 +37,11 @@ export default function Landing() {
         <p className="enter mt-5 text-[22px] font-semibold tracking-tight sm:text-[26px]" style={delay(550)}>
           Accessible until the last staircase.
         </p>
-        <p className="enter mt-4 max-w-[30ch] text-balance text-[19px] leading-relaxed sm:text-[21px]" style={delay(750)}>
-          Every journey deserves a guardian angel.
-          <span className="block text-muted">We go a step ahead, so you can simply arrive.</span>
+        <p className="enter mt-5 max-w-[21rem] text-balance sm:max-w-[30rem]" style={delay(750)}>
+          <span className={`${script.className} script-line block text-[38px] leading-[1.2] sm:text-[48px]`}>
+            Every journey deserves a guardian angel.
+          </span>
+          <span className="mt-3 block text-[17px] leading-relaxed text-muted sm:text-[19px]">We go a step ahead, so you can simply arrive.</span>
         </p>
 
         <ul className="mt-10 flex w-full max-w-[460px] items-start justify-center gap-4 sm:gap-10">
