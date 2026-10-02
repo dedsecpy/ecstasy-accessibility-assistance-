@@ -501,6 +501,6 @@ body {
   .landing .enter,
   .landing .enter-logo {
     animation-name: fade-in-only !important;
-    animation-duration: 0.8s !important;
+    animation-duration: 1.2s !important;
   }
 }

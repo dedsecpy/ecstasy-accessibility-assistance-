@@ -5,10 +5,10 @@ import { Icon, type IconName } from "@/components/Icon";
 import { LandingStage } from "@/components/LandingStage";
 import { Wordmark } from "@/components/ui";
 
-const POINTS: { icon: IconName; title: string; text: string }[] = [
-  { icon: "live", title: "Live, not last year's listing", text: "Lifts, gates and paths as they are right now." },
-  { icon: "map", title: "Fits how you travel", text: "Your chair, your pace and your needs, every visit." },
-  { icon: "shield", title: "Honest when unsure", text: "Every answer shows where it came from." },
+const POINTS: { icon: IconName; label: string }[] = [
+  { icon: "live", label: "Sees what's live" },
+  { icon: "map", label: "Fits how you travel" },
+  { icon: "shield", label: "Honest when unsure" },
 ];
 
 const delay = (ms: number) => ({ "--d": `${ms}ms` }) as CSSProperties;
@@ -34,26 +34,23 @@ export default function Landing() {
         <p className="enter mt-5 text-[22px] font-semibold tracking-tight sm:text-[26px]" style={delay(550)}>
           Accessible until the last staircase.
         </p>
-        <p className="enter mt-3 max-w-[36ch] text-[17px] leading-relaxed text-muted sm:text-[19px]" style={delay(750)}>
-          Ecstasy checks a venue&rsquo;s lifts, gates and paths as they are right now, and tells you honestly whether you can
-          get from the door to your seat.
+        <p className="enter mt-4 max-w-[30ch] text-balance text-[19px] leading-relaxed sm:text-[21px]" style={delay(750)}>
+          Every journey deserves a guardian angel.
+          <span className="block text-muted">We go a step ahead, so you can simply arrive.</span>
         </p>
 
-        <ul className="mt-9 grid w-full gap-3 text-left sm:grid-cols-3">
+        <ul className="mt-10 flex w-full max-w-[460px] items-start justify-center gap-4 sm:gap-10">
           {POINTS.map((p, i) => (
-            <li key={p.title} className="enter glass flex items-start gap-3 rounded-[22px] border border-line p-4 sm:block" style={delay(950 + i * 130)}>
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-bg text-brand">
-                <Icon name={p.icon} className="h-5 w-5" stroke={2} />
+            <li key={p.label} className="enter flex flex-1 flex-col items-center gap-2.5" style={delay(950 + i * 130)}>
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-bg text-brand shadow-[0_8px_24px_-10px_rgba(0,113,227,0.55)]">
+                <Icon name={p.icon} className="h-[22px] w-[22px]" stroke={1.9} />
               </span>
-              <div className="sm:mt-3">
-                <p className="text-[15px] font-semibold leading-snug">{p.title}</p>
-                <p className="mt-0.5 text-[14px] leading-snug text-muted">{p.text}</p>
-              </div>
+              <span className="text-[13px] font-medium leading-tight text-muted sm:text-[14px]">{p.label}</span>
             </li>
           ))}
         </ul>
 
-        <p className="enter mt-9 text-[17px] font-medium sm:text-[19px]" style={delay(1400)}>
+        <p className="enter mt-9 text-balance text-[17px] font-medium sm:text-[19px]" style={delay(1400)}>
           Wherever you&rsquo;re headed, we&rsquo;re here for you, friend.
         </p>
 
