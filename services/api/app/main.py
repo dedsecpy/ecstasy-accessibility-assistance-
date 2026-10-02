@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 from typing import Any, AsyncIterator
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
@@ -21,6 +21,7 @@ from nimbus_core.mqtt import publish_once
 from nimbus_core.schemas import AskRequest, ReportIn, ScenarioIn, StaffCheckIn
 from nimbus_core.visit import hours_text, venue_now
 
+from . import stt
 from .events import broadcaster
 from .rag.context import refresh_ages
 from .rag.listing import listing_health
@@ -102,6 +103,7 @@ def health() -> dict[str, Any]:
             "index": index,
             "label": label,
         },
+        "speech": stt.status(),
     }
 
 
@@ -114,6 +116,31 @@ def meta() -> dict[str, Any]:
         "mobility": MOBILITY_LABELS,
         "scenarios": topics.SCENARIOS,
     }
+
+
+# ------------------------------------------------------------------ speech to text
+
+@app.get("/api/stt")
+def stt_status() -> dict[str, Any]:
+    return stt.status()
+
+
+@app.post("/api/stt")
+async def speech_to_text(request: Request, lang: str | None = Query(None, max_length=16)) -> dict[str, Any]:
+    """Body: the raw recording (audio/webm, audio/mp4, audio/ogg, audio/wav...). Returns {text, ...}."""
+    forwarded = request.headers.get("x-forwarded-for", "")
+    client = forwarded.split(",")[0].strip() or (request.client.host if request.client else "unknown")
+    try:
+        if not stt.enabled():
+            raise stt.STTError(503, "Voice input is not configured on this server.")
+        declared = int(request.headers.get("content-length") or 0)
+        if declared > stt.MAX_BYTES:
+            raise stt.STTError(413, "That recording is too long. Please keep it under a minute.")
+        stt.check_rate(client)
+        audio = await request.body()
+        return await stt.transcribe(audio, request.headers.get("content-type", ""), lang)
+    except stt.STTError as e:
+        raise HTTPException(e.status, str(e)) from e
 
 
 # ------------------------------------------------------------------ venues

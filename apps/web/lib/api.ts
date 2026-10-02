@@ -65,6 +65,27 @@ export const api = {
     json(`/api/sim/scenario`, { method: "POST", body: JSON.stringify({ venue_id, scenario }) }),
   scenarios: () => json<Record<string, string>>("/api/sim/scenarios"),
   reindex: () => json("/api/admin/reindex", { method: "POST" }),
+  sttStatus: () => json<{ enabled: boolean; provider: string | null; max_seconds: number }>("/api/stt"),
+  transcribe: async (audio: Blob, lang?: string): Promise<{ text: string; confidence: number | null }> => {
+    const q = lang ? `?lang=${encodeURIComponent(lang)}` : "";
+    const r = await fetch(`${apiBase()}/api/stt${q}`, {
+      method: "POST",
+      headers: { "Content-Type": audio.type || "application/octet-stream" },
+      body: audio,
+      cache: "no-store",
+    });
+    if (!r.ok) {
+      let msg = `Voice input failed (${r.status})`;
+      try {
+        const d = await r.json();
+        if (typeof d.detail === "string") msg = d.detail;
+      } catch {
+        /* keep the generic message */
+      }
+      throw new Error(msg);
+    }
+    return r.json();
+  },
 };
 
 export interface ReportStatus {

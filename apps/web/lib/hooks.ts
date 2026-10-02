@@ -113,35 +113,160 @@ export function useVenueStream(fixedVenueId?: string) {
   return { features, alerts, scenario, connected, changes };
 }
 
+type SpeechMode = "deepgram" | "browser" | null;
+type SpeechState = "idle" | "listening" | "transcribing";
+
+const RECORDER_TYPES = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
+
+function micError(e: unknown): string {
+  const name = (e as { name?: string })?.name;
+  if (name === "NotAllowedError" || name === "SecurityError")
+    return "Microphone access is blocked. Allow it in your browser's site settings, then try again.";
+  if (name === "NotFoundError") return "No microphone was found on this device.";
+  if (name === "NotReadableError") return "The microphone is being used by another app.";
+  return "Could not start the microphone.";
+}
+
+/**
+ * Dictation. Records with MediaRecorder and transcribes on the server through Deepgram when the API has a key;
+ * otherwise falls back to the browser's own speech recognition where it exists (Chrome, Edge).
+ */
 export function useSpeech(onText: (t: string) => void) {
-  const [listening, setListening] = useState(false);
-  const [supported, setSupported] = useState(false);
+  const [mode, setMode] = useState<SpeechMode>(null);
+  const [state, setState] = useState<SpeechState>("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [seconds, setSeconds] = useState(0);
+  const onTextRef = useRef(onText);
+  onTextRef.current = onText;
   const recRef = useRef<any>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const maxSecondsRef = useRef(60);
+  const discardRef = useRef(false);
+
+  const release = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+  };
 
   useEffect(() => {
     const w = window as any;
-    setSupported(Boolean(w.SpeechRecognition || w.webkitSpeechRecognition));
+    const builtIn = Boolean(w.SpeechRecognition || w.webkitSpeechRecognition);
+    const canRecord = Boolean(navigator.mediaDevices?.getUserMedia) && typeof w.MediaRecorder !== "undefined";
+    setMode(builtIn ? "browser" : null);
+    let cancelled = false;
+    if (canRecord) {
+      api.sttStatus().then((s) => {
+        if (cancelled || !s.enabled) return;
+        maxSecondsRef.current = s.max_seconds || 60;
+        setMode("deepgram");
+      }).catch(() => undefined);
+    }
+    return () => {
+      cancelled = true;
+      discardRef.current = true;
+      try {
+        recRef.current?.stop();
+      } catch {
+        /* already stopped */
+      }
+      release();
+    };
   }, []);
 
-  const toggle = () => {
+  const startDeepgram = async () => {
+    let stream: MediaStream;
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+    } catch (e) {
+      setError(micError(e));
+      return;
+    }
+    const w = window as any;
+    const type = RECORDER_TYPES.find((t) => w.MediaRecorder.isTypeSupported?.(t));
+    const rec: MediaRecorder = new w.MediaRecorder(stream, type ? { mimeType: type } : undefined);
+    const chunks: Blob[] = [];
+    streamRef.current = stream;
+    discardRef.current = false;
+    rec.ondataavailable = (e) => {
+      if (e.data.size) chunks.push(e.data);
+    };
+    rec.onstop = async () => {
+      release();
+      recRef.current = null;
+      if (discardRef.current) return;
+      const blob = new Blob(chunks, { type: rec.mimeType || type || "audio/webm" });
+      if (blob.size < 1200) {
+        setState("idle");
+        setError("I didn't catch that. Tap the microphone and speak.");
+        return;
+      }
+      setState("transcribing");
+      try {
+        const r = await api.transcribe(blob, navigator.language);
+        if (r.text) onTextRef.current(r.text);
+        else setError("No speech was heard. Please try again a little closer to the microphone.");
+      } catch (e) {
+        setError((e as Error).message);
+      } finally {
+        setState("idle");
+      }
+    };
+    recRef.current = rec;
+    rec.start(250);
+    setSeconds(0);
+    setState("listening");
+    const started = Date.now();
+    timerRef.current = setInterval(() => {
+      const s = Math.floor((Date.now() - started) / 1000);
+      setSeconds(s);
+      if (s >= maxSecondsRef.current && rec.state === "recording") rec.stop();
+    }, 250);
+  };
+
+  const startBrowser = () => {
     const w = window as any;
     const SR = w.SpeechRecognition || w.webkitSpeechRecognition;
     if (!SR) return;
-    if (listening && recRef.current) {
-      recRef.current.stop();
-      return;
-    }
     const rec = new SR();
     rec.lang = navigator.language || "en-GB";
     rec.interimResults = false;
     rec.maxAlternatives = 1;
-    rec.onresult = (ev: any) => onText(ev.results[0][0].transcript as string);
-    rec.onend = () => setListening(false);
-    rec.onerror = () => setListening(false);
+    rec.onresult = (ev: any) => onTextRef.current(ev.results[0][0].transcript as string);
+    rec.onend = () => setState("idle");
+    rec.onerror = (ev: any) => {
+      if (ev?.error === "not-allowed") setError(micError({ name: "NotAllowedError" }));
+      else if (ev?.error !== "no-speech" && ev?.error !== "aborted") setError("Speech recognition stopped unexpectedly.");
+      setState("idle");
+    };
     recRef.current = rec;
-    setListening(true);
+    setSeconds(0);
+    setState("listening");
     rec.start();
   };
 
-  return { listening, supported, toggle };
+  const toggle = () => {
+    if (state === "transcribing") return;
+    if (state === "listening") {
+      recRef.current?.stop();
+      return;
+    }
+    setError(null);
+    if (mode === "deepgram") void startDeepgram();
+    else if (mode === "browser") startBrowser();
+  };
+
+  return {
+    supported: mode !== null,
+    mode,
+    listening: state === "listening",
+    transcribing: state === "transcribing",
+    seconds,
+    error,
+    toggle,
+  };
 }
+
+export type Speech = ReturnType<typeof useSpeech>;

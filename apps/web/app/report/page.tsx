@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DictationStatus, MicButton } from "@/components/Dictation";
 import { Icon } from "@/components/Icon";
 import { StatusBadge, ToneIcon } from "@/components/Status";
 import { Notice, PageHeader, Section } from "@/components/ui";
@@ -52,14 +53,9 @@ export default function ReportPage() {
             <div className="flex items-start gap-2">
               <textarea id="report" required minLength={3} rows={5} value={text} onChange={(e) => setText(e.target.value)}
                 className="field min-h-[140px] resize-none" placeholder="e.g. The side gate was locked and nobody answered the intercom at 18:30." />
-              {speech.supported && (
-                <button type="button" onClick={speech.toggle} aria-pressed={speech.listening}
-                  aria-label={speech.listening ? "Stop dictation" : "Dictate your report"}
-                  className={`tap flex shrink-0 items-center justify-center rounded-full transition-colors ${speech.listening ? "bg-bad-bg text-bad motion-safe:animate-pulse" : "bg-brand-bg text-brand"}`}>
-                  <Icon name="mic" className="h-5 w-5" />
-                </button>
-              )}
+              <MicButton speech={speech} label="Dictate your report" />
             </div>
+            <DictationStatus speech={speech} />
           </div>
         </Section>
 

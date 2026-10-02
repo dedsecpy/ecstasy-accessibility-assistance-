@@ -55,6 +55,10 @@ class Settings:
     groq_reasoning_effort: str = field(default_factory=lambda: _env("GROQ_REASONING_EFFORT", "low"))
     groq_max_retry_wait_s: int = field(default_factory=lambda: _int("GROQ_MAX_RETRY_WAIT_S", 30))
 
+    deepgram_api_key: str = field(default_factory=lambda: _env("DEEPGRAM_API_KEY"), repr=False)
+    deepgram_model: str = field(default_factory=lambda: _env("DEEPGRAM_MODEL", "nova-3"))
+    deepgram_language: str = field(default_factory=lambda: _env("DEEPGRAM_LANGUAGE", "en"))
+
     aws_region: str = field(default_factory=lambda: _env("AWS_REGION", _env("AWS_DEFAULT_REGION", "us-east-1")))
     embed_model: str = field(default_factory=lambda: _env("BEDROCK_EMBED_MODEL_ID", "amazon.titan-embed-text-v2:0"))
     embed_dim: int = field(default_factory=lambda: _int("BEDROCK_EMBED_DIM", 1024))

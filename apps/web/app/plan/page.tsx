@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/AccountMenu";
+import { DictationStatus, MicButton } from "@/components/Dictation";
 import { Icon } from "@/components/Icon";
 import { MobilityPicker } from "@/components/MobilityPicker";
 import { ChoiceRow, Notice, PageHeader, Section, SwitchRow } from "@/components/ui";
@@ -256,20 +257,9 @@ export default function PlanPage() {
                   placeholder="e.g. Can I get to the lecture and sit near the front?"
                   className="field min-h-[96px] resize-none"
                 />
-                {speech.supported && (
-                  <button
-                    type="button"
-                    onClick={speech.toggle}
-                    aria-pressed={speech.listening}
-                    aria-label={speech.listening ? "Stop dictation" : "Dictate your question"}
-                    className={`tap flex shrink-0 items-center justify-center rounded-full transition-colors ${
-                      speech.listening ? "bg-bad-bg text-bad motion-safe:animate-pulse" : "bg-brand-bg text-brand"
-                    }`}
-                  >
-                    <Icon name="mic" className="h-5 w-5" />
-                  </button>
-                )}
+                <MicButton speech={speech} label="Dictate your question" />
               </div>
+              <DictationStatus speech={speech} />
             </div>
           </Section>
 
