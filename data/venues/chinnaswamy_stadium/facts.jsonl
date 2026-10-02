@@ -1,0 +1,11 @@
+{"days_ago": 160, "feature": "main_entrance", "status": "not_step_free", "note": "Most turnstile gates have a step or narrow turnstiles.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 160, "feature": "ramp", "status": "ok", "note": "1:15 ramp to the viewing platform, handrails on both sides.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 160, "feature": "seating", "status": "ok", "note": "Accessible viewing platform has companion seats.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 160, "feature": "toilet", "status": "ok", "note": "Accessible toilet on the Gate 18 concourse.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 160, "feature": "hearing_loop", "status": "unknown", "note": "No information about assistive listening.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 20, "feature": "parking", "status": "out_of_service", "note": "No public parking on match days; drop-off allowed on Queen's Road near Gate 18.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 20, "feature": "assistance_desk", "status": "ok", "note": "Book accessible platform seats 48 h ahead; stewards escort from Gate 18.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 4, "feature": "lift", "status": "ok", "note": "Pavilion lift tested before the last match.", "source": "Maintenance log", "source_type": "maintenance_log"}
+{"days_ago": 3, "feature": "courtyard_path", "status": "degraded", "note": "Crowded on match days; barricades leave about 1.2 m clear near Gate 18.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "side_gate", "status": "ok", "note": "Gate 18 accessible entrance staffed by stewards from two hours before play.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "intercom", "status": "ok", "note": "Steward desk at Gate 18 on match days.", "source": "Staff check", "source_type": "staff_note"}

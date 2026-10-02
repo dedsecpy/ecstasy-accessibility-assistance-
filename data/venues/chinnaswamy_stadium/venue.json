@@ -1,0 +1,143 @@
+{
+  "id": "chinnaswamy_stadium",
+  "name": "M. Chinnaswamy Stadium",
+  "city": "Bengaluru",
+  "area": "Cubbon Road",
+  "kind": "Cricket stadium",
+  "tags": [
+    "cricket",
+    "sports",
+    "stadium",
+    "matches",
+    "mg road"
+  ],
+  "blurb": "Bengaluru's home of cricket, a short walk from Cubbon Park metro.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2024-04-01",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible seating",
+      "features": [
+        "side_gate",
+        "ramp",
+        "seating"
+      ]
+    },
+    {
+      "id": "lift_all_floors",
+      "text": "Lift to the pavilion stands",
+      "features": [
+        "lift"
+      ]
+    },
+    {
+      "id": "parking",
+      "text": "Accessible parking",
+      "features": [
+        "parking"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "10:00",
+      "23:00"
+    ],
+    "tue": [
+      "10:00",
+      "23:00"
+    ],
+    "wed": [
+      "10:00",
+      "23:00"
+    ],
+    "thu": [
+      "10:00",
+      "23:00"
+    ],
+    "fri": [
+      "10:00",
+      "23:00"
+    ],
+    "sat": [
+      "10:00",
+      "23:00"
+    ],
+    "sun": [
+      "10:00",
+      "23:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0107",
+  "prebook_hours": 48,
+  "entry_text": "Step-free entry is only via Gate 18 on Queen's Road, a wide accessible gate staffed by stewards from two hours before play.",
+  "feature_labels": {
+    "side_gate": "Gate 18 accessible entrance",
+    "intercom": "Gate 18 steward desk",
+    "ramp": "Gate 18 ramp",
+    "courtyard_path": "Queen's Road walkway",
+    "main_entrance": "Turnstile gates",
+    "parking": "Match-day parking"
+  },
+  "terms": {
+    "gate": "Gate 18",
+    "gate_where": "Gate 18 on Queen's Road",
+    "path": "the Queen's Road walkway",
+    "path_area": "the Queen's Road walkway",
+    "bypass": "the steward-escorted service lane",
+    "bypass_long": "the steward-escorted service lane inside Gate 18",
+    "ramp_to": "the accessible viewing platform",
+    "lift_from": "the Gate 18 concourse",
+    "seat_reserve": "a companion seat on the accessible platform",
+    "seating_short": "there is nowhere to sit on the walkway from the metro"
+  },
+  "locations": {
+    "Accessible Viewing Platform": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Fan Zone": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "P1 Pavilion Stand": {
+      "floor": 2,
+      "needs_lift": true
+    }
+  },
+  "devices": {
+    "lifts": [
+      {
+        "id": "lift-stadium",
+        "feature": "lift",
+        "label": "Pavilion lift (Gate 18)"
+      }
+    ],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "t20_night",
+      "name": "T20 night match",
+      "start": "2026-10-15T19:30",
+      "doors": "2026-10-15T17:30",
+      "location": "Accessible Viewing Platform"
+    },
+    {
+      "id": "womens_odi",
+      "name": "Women's ODI",
+      "start": "2026-10-22T14:00",
+      "doors": "2026-10-22T12:00",
+      "location": "P1 Pavilion Stand"
+    },
+    {
+      "id": "stadium_tour",
+      "name": "Stadium heritage tour",
+      "start": "2026-11-05T11:00",
+      "doors": "2026-11-05T10:45",
+      "location": "Fan Zone"
+    }
+  ]
+}

@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from nimbus_core.features import WHEELED
+from nimbus_core.features import FEATURES, WHEELED, feature_label
 from nimbus_core.schemas import AnswerBody, Profile
 
 from .rules import RuleResult
@@ -97,3 +97,21 @@ def enforce(body: AnswerBody, rules: RuleResult, v: Validation) -> AnswerBody:
 def strip_invalid_citations(body: AnswerBody, valid_ids: set[str]) -> None:
     for item in [*body.route, *body.warnings, *body.discrepancies]:
         item.citations = [c for c in item.citations if c in valid_ids]
+
+
+_IDS = "|".join(sorted((f for f in FEATURES if "_" in f), key=len, reverse=True))  # "lift", "ramp" are plain words
+_ID_PAREN = re.compile(rf"\s*\((?:the\s+)?({_IDS})\)")
+_ID_BARE = re.compile(rf"\b({_IDS})\b")
+
+
+def humanize_feature_ids(body: AnswerBody) -> None:
+    """Visitors should read the venue's own names ("Gate 2"), not internal ids ("side_gate")."""
+    def fix(text: str) -> str:
+        text = _ID_PAREN.sub("", text)
+        return _ID_BARE.sub(lambda m: feature_label(m.group(1)), text)
+
+    body.headline = fix(body.headline)
+    body.summary = fix(body.summary)
+    body.verify = [fix(v) for v in body.verify]
+    for item in [*body.route, *body.warnings, *body.discrepancies]:
+        item.text = fix(item.text)

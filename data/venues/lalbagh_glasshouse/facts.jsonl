@@ -1,0 +1,9 @@
+{"days_ago": 180, "feature": "main_entrance", "status": "ok", "note": "West Gate has a wide, level pedestrian opening.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 180, "feature": "ramp", "status": "ok", "note": "Gentle ramp up to the Glass House floor.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 180, "feature": "parking", "status": "degraded", "note": "Paid parking at the Double Road gate, about 400 m from the Glass House; drop-off allowed at the West Gate.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 30, "feature": "assistance_desk", "status": "ok", "note": "Battery buggies run from the West Gate 09:00-17:00, first come first served.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 9, "feature": "toilet", "status": "degraded", "note": "Accessible toilet near the West Gate; the door is heavy and the room is small.", "source": "Visitor report", "source_type": "visitor_report"}
+{"days_ago": 2, "feature": "courtyard_path", "status": "degraded", "note": "Paved avenue but crowded during the flower show; barricades leave about 1.2 m clear.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "seating", "status": "degraded", "note": "Benches along the avenue are cordoned off during the flower show.", "source": "Visitor report", "source_type": "visitor_report"}
+{"days_ago": 1, "feature": "side_gate", "status": "ok", "note": "West Gate pedestrian entrance open 06:00-19:00.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 1, "feature": "intercom", "status": "ok", "note": "Buggy help desk by the West Gate ticket counter, 09:00-17:00.", "source": "Staff check", "source_type": "staff_note"}

@@ -1,0 +1,136 @@
+{
+  "id": "lalbagh_glasshouse",
+  "name": "Lalbagh Glass House",
+  "city": "Bengaluru",
+  "area": "Lalbagh, Mavalli",
+  "kind": "Botanical garden",
+  "tags": [
+    "garden",
+    "flower show",
+    "outdoors",
+    "heritage",
+    "park"
+  ],
+  "blurb": "The 1889 glass house at the heart of Lalbagh, home of the city's flower shows.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2024-01-10",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair friendly",
+      "features": [
+        "main_entrance",
+        "courtyard_path",
+        "ramp"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilet",
+      "features": [
+        "toilet"
+      ]
+    },
+    {
+      "id": "assistance",
+      "text": "Buggy service for visitors",
+      "features": [
+        "assistance_desk"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "09:00",
+      "17:00"
+    ],
+    "tue": [
+      "09:00",
+      "17:00"
+    ],
+    "wed": [
+      "09:00",
+      "17:00"
+    ],
+    "thu": [
+      "09:00",
+      "17:00"
+    ],
+    "fri": [
+      "09:00",
+      "17:00"
+    ],
+    "sat": [
+      "09:00",
+      "17:00"
+    ],
+    "sun": [
+      "09:00",
+      "17:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0106",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is through the West Gate pedestrian opening; battery buggies run from there to the Glass House.",
+  "feature_labels": {
+    "side_gate": "West Gate pedestrian entrance",
+    "intercom": "Buggy help desk",
+    "ramp": "Glass House ramp",
+    "courtyard_path": "Avenue to the Glass House",
+    "seating": "Avenue benches"
+  },
+  "terms": {
+    "gate": "the West Gate",
+    "gate_where": "the West Gate on Lalbagh Road",
+    "path": "the avenue to the Glass House",
+    "path_area": "the main avenue",
+    "bypass": "the battery buggy",
+    "bypass_long": "a battery buggy from the West Gate (ask at the help desk)",
+    "ramp_to": "the Glass House floor",
+    "lift_from": "the entrance",
+    "seat_reserve": "a buggy seat and a shaded rest spot",
+    "seating_short": "the avenue benches are cordoned off during the show"
+  },
+  "locations": {
+    "Glass House": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "West Gate Lawn": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Bonsai Garden": {
+      "floor": 0,
+      "needs_lift": false
+    }
+  },
+  "devices": {
+    "lifts": [],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "dasara_flower_show",
+      "name": "Dasara Flower Show",
+      "start": "2026-10-12T10:00",
+      "doors": "2026-10-12T09:00",
+      "location": "Glass House"
+    },
+    {
+      "id": "bonsai_weekend",
+      "name": "Bonsai weekend",
+      "start": "2026-10-25T10:00",
+      "doors": "2026-10-25T09:30",
+      "location": "Bonsai Garden"
+    },
+    {
+      "id": "heritage_walk",
+      "name": "Afternoon heritage walk",
+      "start": "2026-11-08T15:30",
+      "doors": "2026-11-08T15:15",
+      "location": "West Gate Lawn"
+    }
+  ]
+}

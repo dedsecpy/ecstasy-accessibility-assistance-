@@ -1,0 +1,135 @@
+{
+  "id": "ranga_shankara",
+  "name": "Ranga Shankara",
+  "city": "Bengaluru",
+  "area": "JP Nagar 2nd Phase",
+  "kind": "Theatre",
+  "tags": [
+    "theatre",
+    "plays",
+    "drama",
+    "kannada",
+    "cafe"
+  ],
+  "blurb": "A much-loved 300-seat theatre with a play almost every evening.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2024-06-02",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "ramp"
+      ]
+    },
+    {
+      "id": "step_free",
+      "text": "Step-free access",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "courtyard_path"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilet",
+      "features": [
+        "toilet"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": null,
+    "tue": [
+      "11:00",
+      "21:30"
+    ],
+    "wed": [
+      "11:00",
+      "21:30"
+    ],
+    "thu": [
+      "11:00",
+      "21:30"
+    ],
+    "fri": [
+      "11:00",
+      "21:30"
+    ],
+    "sat": [
+      "11:00",
+      "21:30"
+    ],
+    "sun": [
+      "11:00",
+      "21:30"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0102",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is through the front gate on 8th Cross, which is open from 11:00 until the last show ends.",
+  "feature_labels": {
+    "side_gate": "Front gate (8th Cross)",
+    "intercom": "Box office counter",
+    "ramp": "Auditorium ramp",
+    "courtyard_path": "Foyer route",
+    "seating": "Foyer benches"
+  },
+  "terms": {
+    "gate": "the front gate",
+    "gate_where": "the front gate on 8th Cross",
+    "path": "the foyer route",
+    "path_area": "the open foyer",
+    "bypass": "the side door by the green room",
+    "bypass_long": "the level side door by the green room (ask the box office)",
+    "ramp_to": "the auditorium doors",
+    "lift_from": "the foyer",
+    "seat_reserve": "a front-row wheelchair space or an aisle seat",
+    "seating_short": "the foyer benches fill up before the evening show"
+  },
+  "locations": {
+    "Auditorium": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Workshop Room": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Foyer": {
+      "floor": 0,
+      "needs_lift": false
+    }
+  },
+  "devices": {
+    "lifts": [],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "tughlaq",
+      "name": "Evening play: Tughlaq (Kannada)",
+      "start": "2026-10-09T19:30",
+      "doors": "2026-10-09T19:00",
+      "location": "Auditorium"
+    },
+    {
+      "id": "hamlet_matinee",
+      "name": "Weekend matinee: Hamlet (English)",
+      "start": "2026-10-11T15:30",
+      "doors": "2026-10-11T15:00",
+      "location": "Auditorium"
+    },
+    {
+      "id": "kids_theatre",
+      "name": "Children's theatre festival",
+      "start": "2026-11-14T11:00",
+      "doors": "2026-11-14T10:30",
+      "location": "Workshop Room"
+    }
+  ]
+}

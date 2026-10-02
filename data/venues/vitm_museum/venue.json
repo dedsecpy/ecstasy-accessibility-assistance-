@@ -1,0 +1,141 @@
+{
+  "id": "vitm_museum",
+  "name": "Visvesvaraya Industrial & Technological Museum",
+  "city": "Bengaluru",
+  "area": "Kasturba Road",
+  "kind": "Science museum",
+  "tags": [
+    "museum",
+    "science",
+    "kids",
+    "space",
+    "cubbon park"
+  ],
+  "blurb": "Hands-on science, engines and a space gallery beside Cubbon Park.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2022-11-30",
+  "listing_claims": [
+    {
+      "id": "lift_all_floors",
+      "text": "Lift to all floors",
+      "features": [
+        "lift"
+      ]
+    },
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "ramp",
+        "lift"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilet",
+      "features": [
+        "toilet"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "09:30",
+      "18:00"
+    ],
+    "tue": [
+      "09:30",
+      "18:00"
+    ],
+    "wed": [
+      "09:30",
+      "18:00"
+    ],
+    "thu": [
+      "09:30",
+      "18:00"
+    ],
+    "fri": [
+      "09:30",
+      "18:00"
+    ],
+    "sat": [
+      "09:30",
+      "18:00"
+    ],
+    "sun": [
+      "09:30",
+      "18:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0104",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is via the permanent east ramp entrance beside the ticket office, open during museum hours.",
+  "feature_labels": {
+    "side_gate": "East ramp entrance",
+    "intercom": "Security desk",
+    "ramp": "East-side ramp",
+    "courtyard_path": "Front garden path",
+    "lift": "Gallery lift"
+  },
+  "terms": {
+    "gate": "the east ramp entrance",
+    "gate_where": "the east ramp entrance by the ticket office",
+    "path": "the front garden path",
+    "path_area": "the front garden",
+    "bypass": "the service gate",
+    "bypass_long": "the service gate on Kasturba Road (security will escort you)",
+    "ramp_to": "the Engine Hall",
+    "lift_from": "the Engine Hall",
+    "seat_reserve": "a wheelchair space in the Science Theatre",
+    "seating_short": "gallery benches are busy at weekends"
+  },
+  "locations": {
+    "Engine Hall": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Children's Science Corner": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Science Theatre": {
+      "floor": 1,
+      "needs_lift": true
+    },
+    "Space Gallery": {
+      "floor": 2,
+      "needs_lift": true
+    }
+  },
+  "devices": {
+    "lifts": [],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "space_tour",
+      "name": "Space Gallery guided tour",
+      "start": "2026-10-06T11:00",
+      "doors": "2026-10-06T10:45",
+      "location": "Space Gallery"
+    },
+    {
+      "id": "living_planet",
+      "name": "Science Theatre show: Living Planet",
+      "start": "2026-10-13T15:00",
+      "doors": "2026-10-13T14:45",
+      "location": "Science Theatre"
+    },
+    {
+      "id": "engine_demo",
+      "name": "Engine Hall live demo",
+      "start": "2026-10-17T12:00",
+      "doors": "2026-10-17T11:45",
+      "location": "Engine Hall"
+    }
+  ]
+}

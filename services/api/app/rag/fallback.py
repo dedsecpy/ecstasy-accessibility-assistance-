@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from nimbus_core.features import BLOCKING_STATUSES, FEATURES, WHEELED, feature_label
+from nimbus_core.features import BLOCKING_STATUSES, FEATURES, WHEELED, feature_label, terms
 from nimbus_core.fusion import FusedState
 from nimbus_core.schemas import AnswerBody, Cited, Profile
 from nimbus_core.visit import VisitContext
@@ -16,7 +16,7 @@ BLOCKER_HEADLINES = {
     "lift_out": "Do not travel on the strength of the listing: the lift is out of service and your destination is upstairs.",
     "gate_unanswered_now": "Not right now: the only step-free entrance is locked and nobody is answering.",
     "gate_out": "Not right now: the only step-free entrance is out of use.",
-    "path_blocked": "Not right now: the only step-free path through the courtyard is blocked.",
+    "path_blocked": "Not right now: the only step-free path through {path_area} is blocked.",
     "ramp_out": "Not right now: the ramp on the step-free route is out of use.",
 }
 CAUTION_HEADLINES = {
@@ -24,19 +24,19 @@ CAUTION_HEADLINES = {
     "lift_unknown": "Check before you travel: the lift's live sensor is silent, so Ecstasy cannot confirm the lift is working.",
     "lift_stale": "The route works on paper, but the lift has not been confirmed recently - check on the day.",
     "lift_no_data": "Check before you travel: there is no record of the lift's status.",
-    "gate_unanswered_earlier": "You can get in step-free, but the Side Gate was recently left unanswered - pre-book assistance.",
-    "gate_unconfirmed": "Check before you travel: the Side Gate arrangements are not confirmed.",
-    "path_narrow": "Entry is possible, but the courtyard path is narrowed - confirm your chair fits first.",
-    "path_unconfirmed": "Check before you travel: the courtyard path has not been confirmed clear recently.",
-    "out_of_hours": "You can get in step-free, but only via the Side Gate and only if assistance is pre-booked for your arrival time.",
-    "out_of_hours_late": "You can get in step-free via the Side Gate, but the desk will be closed when you arrive - phone ahead so security meets you.",
-    "intercom_down": "You can get in step-free, but the Side Gate intercom is not working - phone when you arrive.",
+    "gate_unanswered_earlier": "You can get in step-free, but {gate} was recently left unanswered - pre-book assistance.",
+    "gate_unconfirmed": "Check before you travel: the arrangements at {gate} are not confirmed.",
+    "path_narrow": "Entry is possible, but {path} is narrowed - confirm your chair fits first.",
+    "path_unconfirmed": "Check before you travel: {path} has not been confirmed clear recently.",
+    "out_of_hours": "You can get in step-free, but only via {gate} and only if assistance is pre-booked for your arrival time.",
+    "out_of_hours_late": "You can get in step-free via {gate}, but the desk will be closed when you arrive - phone ahead so security meets you.",
+    "intercom_down": "You can get in step-free, but the intercom at {gate} is not working - phone when you arrive.",
     "steep_ramp": "The step-free route works, but it includes a steep ramp with nowhere to rest - allow time or ask for help.",
-    "seating": "You can get in, but plan rest stops: seating on the route is scarce and the foyer chairs are taken.",
+    "seating": "You can get in, but plan rest stops: {seating_short}.",
     "loop_untested": "You can get in, but the hearing loop has not been confirmed working - ask the venue to test it first.",
     "loop_out": "You can get in, but the hearing loop is not working - ask for a portable loop or a seat near the speaker.",
     "toilet_out": "You can get in, but the accessible toilet is out of order - ask where the nearest one is.",
-    "parking_far_short_range": "The route works, but the blue badge parking may be too far for you - ask about a Side Gate drop-off.",
+    "parking_far_short_range": "The route works, but the blue badge parking may be too far for you - ask about a drop-off at {gate}.",
     "parking_out": "The route works, but blue badge parking is unavailable - ask the desk where to park or be dropped off.",
 }
 CAUTION_ORDER_WHEELED = ["lift_verify", "lift_unknown", "lift_no_data", "lift_stale", "gate_unconfirmed", "gate_unanswered_earlier",
@@ -73,6 +73,7 @@ class Citer:
 def compose(profile: Profile, visit: VisitContext, rules: RuleResult, states: dict[str, FusedState],
             live: list[dict[str, Any]], passages: list[Passage], config: dict[str, Any]) -> AnswerBody:
     cite = Citer(live, passages)
+    t = terms()
     wheeled = profile.mobility in WHEELED
     st = states.get
     route: list[Cited] = []
@@ -94,10 +95,10 @@ def compose(profile: Profile, visit: VisitContext, rules: RuleResult, states: di
                            citations=cite("side_gate")))
     cp = st("courtyard_path")
     if cp is not None:
-        route.append(Cited(text=f"Cross the courtyard. {cp.note}", citations=cite("courtyard_path")))
+        route.append(Cited(text=f"Cross {t['path_area']}. {cp.note}", citations=cite("courtyard_path")))
     rp = st("ramp")
     if rp is not None:
-        route.append(Cited(text=f"Take the ramp up to the ground floor foyer: {rp.note}", citations=cite("ramp")))
+        route.append(Cited(text=f"Take the ramp up to {t['ramp_to']}: {rp.note}", citations=cite("ramp")))
     lf = st("lift")
     dest = visit.destination or "your destination"
     if visit.needs_lift:
@@ -105,7 +106,7 @@ def compose(profile: Profile, visit: VisitContext, rules: RuleResult, states: di
             route.append(Cited(text=f"The lift to the {dest} is out of service - there is no step-free way up. Do not travel until it is confirmed working.",
                                citations=cite("lift")))
         elif lf is not None:
-            route.append(Cited(text=f"Take the lift from the foyer to the {dest} (floor {visit.floor if visit.floor is not None else 1}). Live status: {lf.status_label.lower()}, {lf.freshness_text()}.",
+            route.append(Cited(text=f"Take the lift from {t['lift_from']} to the {dest} (floor {visit.floor if visit.floor is not None else 1}). Live status: {lf.status_label.lower()}, {lf.freshness_text()}.",
                                citations=cite("lift")))
     else:
         route.append(Cited(text=f"The {dest} is on the ground floor - no lift needed.", citations=cite("lift") or cite("ramp")))
@@ -135,12 +136,13 @@ def compose(profile: Profile, visit: VisitContext, rules: RuleResult, states: di
     codes = [f.code for f in rules.findings]
     if rules.blockers:
         verdict = "no_go"
-        headline = BLOCKER_HEADLINES.get(rules.blockers[0].code, "Do not travel yet: " + rules.blockers[0].text)
+        code = rules.blockers[0].code
+        headline = BLOCKER_HEADLINES[code].format(**t) if code in BLOCKER_HEADLINES else "Do not travel yet: " + rules.blockers[0].text
     elif rules.cautions:
         verdict = "caution"
         order = CAUTION_ORDER_WALKING if profile.mobility == "walks_short_distances" else CAUTION_ORDER_WHEELED
         code = next((c for c in order if c in codes), rules.cautions[0].code)
-        headline = CAUTION_HEADLINES.get(code, "Possible, but check first: " + rules.cautions[0].text)
+        headline = CAUTION_HEADLINES[code].format(**t) if code in CAUTION_HEADLINES else "Possible, but check first: " + rules.cautions[0].text
     else:
         verdict = "go"
         headline = (f"Yes - the step-free route via the {feature_label('side_gate')} works for you"

@@ -1,0 +1,12 @@
+{"days_ago": 300, "feature": "main_entrance", "status": "not_step_free", "note": "Three steps at the main entrance; a portable ramp is kept at security.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 300, "feature": "ramp", "status": "ok", "note": "1:15 ramp with handrails on both sides.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 300, "feature": "toilet", "status": "ok", "note": "Accessible toilet on the ground floor only.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 300, "feature": "parking", "status": "degraded", "note": "Pay parking on Kasturba Road; two accessible bays are usually taken by 11:00.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 300, "feature": "hearing_loop", "status": "unknown", "note": "No information about a loop in the Science Theatre.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 45, "feature": "assistance_desk", "status": "ok", "note": "Wheelchairs to borrow at the ticket office, first come first served.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 6, "feature": "seating", "status": "ok", "note": "Benches in every gallery.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 5, "feature": "courtyard_path", "status": "ok", "note": "Paved garden path from the gate, about 1.8 m wide.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "side_gate", "status": "ok", "note": "East ramp entrance open during museum hours.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "intercom", "status": "ok", "note": "Security desk at the east entrance, staffed during opening hours.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "lift", "status": "out_of_service", "note": "Gallery lift stopped with a controller fault; engineer booked, no return date confirmed.", "source": "Maintenance log", "source_type": "maintenance_log"}
+{"days_ago": 1, "feature": "lift", "status": "out_of_service", "note": "Staff said the lift was switched off; could not reach the Space Gallery.", "source": "Visitor report", "source_type": "visitor_report"}

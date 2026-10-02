@@ -16,7 +16,7 @@ from starlette.concurrency import run_in_threadpool
 
 from nimbus_core import db, topics
 from nimbus_core.config import get_settings
-from nimbus_core.features import FEATURES, MOBILITY_LABELS, SOURCE_KINDS, STATUS_LABELS
+from nimbus_core.features import FEATURES, MOBILITY_LABELS, SOURCE_KINDS, STATUS_LABELS, feature_label, use_venue
 from nimbus_core.mqtt import publish_once
 from nimbus_core.schemas import AskRequest, ReportIn, ScenarioIn, StaffCheckIn
 from nimbus_core.visit import hours_text, venue_now
@@ -59,6 +59,7 @@ def _venue(venue_id: str) -> dict[str, Any]:
     cfg = db.get_venue(venue_id)
     if cfg is None:
         raise HTTPException(404, f"Unknown venue '{venue_id}'")
+    use_venue(cfg)
     return cfg
 
 
@@ -119,7 +120,12 @@ def meta() -> dict[str, Any]:
 
 @app.get("/api/venues")
 def venues() -> list[dict[str, Any]]:
-    return [{"id": v["id"], "name": v["name"], "events": v["config"].get("events", [])} for v in db.list_venues()]
+    out = []
+    for v in db.list_venues():
+        c = v["config"]
+        out.append({"id": v["id"], "name": v["name"], "events": c.get("events", []),
+                    **{k: c.get(k) for k in ("city", "area", "kind", "tags", "blurb", "demo")}})
+    return out
 
 
 @app.get("/api/venues/{venue_id}")
@@ -127,6 +133,7 @@ def venue(venue_id: str) -> dict[str, Any]:
     cfg = _venue(venue_id)
     now = venue_now(cfg)
     return {**cfg, "hours_text": hours_text(cfg), "local_time": now.isoformat(),
+            "labels": {k: feature_label(k) for k in FEATURES},
             "scenario": db.get_setting(f"scenario:{venue_id}", "normal")}
 
 
@@ -184,6 +191,7 @@ async def ask_stream_get(venue_id: str, body: str = Query(..., description="AskR
 # ------------------------------------------------------------------ live status
 
 def _status_payload(venue_id: str) -> dict[str, Any]:
+    use_venue(db.get_venue(venue_id))
     states = refresh_ages(db.get_feature_states(venue_id), datetime.now(timezone.utc))
     order = list(FEATURES)
     feats = [states[f].to_dict() for f in order if f in states]

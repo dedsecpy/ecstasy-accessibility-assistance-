@@ -1,6 +1,28 @@
-import type { Alert, AskRequest, AskResult, FeatureState, Health, Venue } from "./types";
+import type { Alert, AskRequest, AskResult, FeatureState, Health, Venue, VenueSummary } from "./types";
 
 export const VENUE_ID = process.env.NEXT_PUBLIC_VENUE_ID || "riverside_hall";
+const VENUE_KEY = "ecstasy.venue";
+export const VENUE_EVENT = "ecstasy:venue";
+
+/** The venue the visitor last picked (stored on this device), else the default venue. */
+export function currentVenueId(): string {
+  if (typeof window === "undefined") return VENUE_ID;
+  try {
+    const id = localStorage.getItem(VENUE_KEY);
+    return id && /^[a-z0-9_-]+$/.test(id) ? id : VENUE_ID;
+  } catch {
+    return VENUE_ID;
+  }
+}
+
+export function setCurrentVenue(id: string) {
+  try {
+    localStorage.setItem(VENUE_KEY, id);
+  } catch {
+    /* storage disabled: the choice lasts for this page only */
+  }
+  window.dispatchEvent(new CustomEvent(VENUE_EVENT, { detail: id }));
+}
 
 /**
  * On Vercel the API shares the web app's domain under /api, so requests stay same-origin.
@@ -28,17 +50,18 @@ async function json<T>(path: string, init?: RequestInit): Promise<T> {
 
 export const api = {
   health: () => json<Health>("/api/health"),
-  venue: (id = VENUE_ID) => json<Venue>(`/api/venues/${id}`),
-  status: (id = VENUE_ID) => json<{ features: FeatureState[]; scenario: string }>(`/api/venues/${id}/status`),
-  alerts: (id = VENUE_ID) => json<Alert[]>(`/api/venues/${id}/alerts`),
-  ack: (alertId: number, id = VENUE_ID) => json(`/api/venues/${id}/alerts/${alertId}/ack`, { method: "POST" }),
-  listingHealth: (id = VENUE_ID) => json<ListingHealth>(`/api/venues/${id}/listing-health`),
-  report: (body: { text: string; reporter: string; kind?: string; needs?: string }, id = VENUE_ID) =>
+  venues: () => json<VenueSummary[]>("/api/venues"),
+  venue: (id = currentVenueId()) => json<Venue>(`/api/venues/${id}`),
+  status: (id = currentVenueId()) => json<{ features: FeatureState[]; scenario: string }>(`/api/venues/${id}/status`),
+  alerts: (id = currentVenueId()) => json<Alert[]>(`/api/venues/${id}/alerts`),
+  ack: (alertId: number, id = currentVenueId()) => json(`/api/venues/${id}/alerts/${alertId}/ack`, { method: "POST" }),
+  listingHealth: (id = currentVenueId()) => json<ListingHealth>(`/api/venues/${id}/listing-health`),
+  report: (body: { text: string; reporter: string; kind?: string; needs?: string }, id = currentVenueId()) =>
     json<{ id: number; status: string }>(`/api/venues/${id}/reports`, { method: "POST", body: JSON.stringify(body) }),
   reportStatus: (rid: number) => json<ReportStatus>(`/api/reports/${rid}`),
-  staffCheck: (items: { feature: string; status: string; note: string }[], staff_name: string, id = VENUE_ID) =>
+  staffCheck: (items: { feature: string; status: string; note: string }[], staff_name: string, id = currentVenueId()) =>
     json<{ id: number }>(`/api/venues/${id}/staff-checks`, { method: "POST", body: JSON.stringify({ staff_name, items }) }),
-  scenario: (scenario: string, venue_id = VENUE_ID) =>
+  scenario: (scenario: string, venue_id = currentVenueId()) =>
     json(`/api/sim/scenario`, { method: "POST", body: JSON.stringify({ venue_id, scenario }) }),
   scenarios: () => json<Record<string, string>>("/api/sim/scenarios"),
   reindex: () => json("/api/admin/reindex", { method: "POST" }),
@@ -68,7 +91,7 @@ export interface ListingHealth {
 export async function askStream(
   req: AskRequest,
   onProgress: (stage: string, message: string) => void,
-  id = VENUE_ID,
+  id = currentVenueId(),
 ): Promise<AskResult> {
   const r = await fetch(`${apiBase()}/api/venues/${id}/ask/stream`, {
     method: "POST",

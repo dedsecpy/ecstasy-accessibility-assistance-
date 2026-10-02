@@ -5,20 +5,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/AccountMenu";
 import { Icon } from "@/components/Icon";
+import { MobilityPicker } from "@/components/MobilityPicker";
 import { ChoiceRow, Notice, PageHeader, Section, SwitchRow } from "@/components/ui";
+import { VenueSearch } from "@/components/VenueSearch";
 import { DEFAULT_PROFILE, loadAccount, useAccount } from "@/lib/account";
-import { api, askStream } from "@/lib/api";
+import { api, askStream, currentVenueId, setCurrentVenue, VENUE_ID } from "@/lib/api";
 import { useSpeech } from "@/lib/hooks";
 import { loadPlan, savePlan } from "@/lib/store";
-import type { Mobility, Profile, Venue } from "@/lib/types";
-
-const MOBILITY: { id: Mobility; label: string }[] = [
-  { id: "manual_wheelchair", label: "Manual wheelchair" },
-  { id: "powered_wheelchair", label: "Powered wheelchair" },
-  { id: "mobility_scooter", label: "Mobility scooter" },
-  { id: "walks_short_distances", label: "Walk short distances" },
-  { id: "other", label: "Other" },
-];
+import type { Profile, Venue, VenueSummary } from "@/lib/types";
 
 const NEEDS: { key: "needs_seating" | "avoid_slopes" | "needs_assistance"; label: string; detail: string }[] = [
   { key: "needs_seating", label: "I need places to sit", detail: "Rest points along the route" },
@@ -95,32 +89,47 @@ export default function PlanPage() {
   const progressRef = useRef<HTMLDivElement>(null);
   const speech = useSpeech((t) => setQuestion((q) => (q ? `${q} ${t}` : t)));
 
+  const [switching, setSwitching] = useState(false);
+
   useEffect(() => {
-    api.venue().then((v) => {
+    const id = currentVenueId();
+    (id === VENUE_ID ? api.venue(id) : api.venue(id).catch(() => api.venue(VENUE_ID))).then((v) => {
       setVenue(v);
       const saved = loadPlan();
       const account = loadAccount();
       if (account && (!saved || account.updatedAt > saved.savedAt)) setProfile(account.profile);
       else if (saved) setProfile({ ...DEFAULT_PROFILE, ...saved.request.profile });
-      if (saved) {
-        setEventId(saved.request.event_id || "");
-        setQuestion(saved.request.question);
-      } else if (v.events.length) {
-        setEventId(v.events[0].id);
-      }
+      if (saved) setQuestion(saved.request.question);
+      if (saved && (saved.venueId || VENUE_ID) === v.id) setEventId(saved.request.event_id || "");
+      else setEventId(v.events[0]?.id || "");
     }).catch((e) => setError(`Cannot reach the Ecstasy API: ${e.message}`));
   }, []);
 
+  const pickVenue = (v: VenueSummary) => {
+    if (v.id === venue?.id) return;
+    setCurrentVenue(v.id);
+    setSwitching(true);
+    setError(null);
+    api.venue(v.id)
+      .then((full) => {
+        setVenue(full);
+        setEventId(full.events[0]?.id || "");
+      })
+      .catch((e) => setError(`Could not load ${v.name}: ${e.message}`))
+      .finally(() => setSwitching(false));
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!venue) return;
     setBusy(true);
     setError(null);
     setSteps([]);
     progressRef.current?.focus();
     const request = { question, profile, event_id: eventId || null };
     try {
-      const result = await askStream(request, (stage, message) => setSteps((s) => [...s, { stage, message }]));
-      savePlan({ request, result, savedAt: new Date().toISOString() });
+      const result = await askStream(request, (stage, message) => setSteps((s) => [...s, { stage, message }]), venue.id);
+      savePlan({ request, result, savedAt: new Date().toISOString(), venueId: venue.id, venueName: venue.name });
       router.push("/answer");
     } catch (err) {
       setError((err as Error).message);
@@ -146,11 +155,33 @@ export default function PlanPage() {
       </div>
 
       <div className="grid items-start gap-8 lg:grid-cols-2">
-        <div className="space-y-8">
+        <div className="min-w-0 space-y-8">
           <Section id="event" title="Event">
+            <VenueSearch currentId={venue?.id ?? null} onSelect={pickVenue} />
+
+            {venue && (
+              <div className="card row gap-3 p-4" aria-live="polite">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-fill text-white" aria-hidden="true">
+                  <Icon name="building" className="h-5 w-5" stroke={2} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] font-semibold uppercase tracking-wide text-muted">Events at</span>
+                  <span className="block font-semibold leading-snug">{venue.name}</span>
+                  {(venue.area || venue.kind) && (
+                    <span className="block text-[15px] leading-snug text-muted">{[venue.area, venue.city, venue.kind].filter(Boolean).join(" \u00b7 ")}</span>
+                  )}
+                </span>
+                {switching ? (
+                  <span className="spinner shrink-0 text-brand" aria-label="Loading venue" />
+                ) : venue.demo ? (
+                  <span className="badge shrink-0 bg-unsure-bg px-2.5 py-1 text-[12px] text-unsure" title="Illustrative sample data, not verified accessibility information">Sample data</span>
+                ) : null}
+              </div>
+            )}
+
             <fieldset>
               <legend className="sr-only">Which event?</legend>
-              <div className="list" style={{ ["--inset" as string]: "64px" }}>
+              <div className={`list transition-opacity ${switching ? "opacity-50" : ""}`} style={{ ["--inset" as string]: "64px" }}>
                 {venue?.events.map((ev) => {
                   const up = venue.locations[ev.location]?.needs_lift;
                   return (
@@ -189,21 +220,12 @@ export default function PlanPage() {
           </Section>
 
           <Section id="mobility" title="How you get around">
-            <fieldset>
-              <legend className="sr-only">Mobility</legend>
-              <div className="list">
-                {MOBILITY.map((m) => (
-                  <ChoiceRow
-                    key={m.id}
-                    name="mobility"
-                    value={m.id}
-                    checked={profile.mobility === m.id}
-                    onChange={() => setProfile({ ...profile, mobility: m.id })}
-                    title={m.label}
-                  />
-                ))}
-              </div>
-            </fieldset>
+            <MobilityPicker
+              value={profile.mobility}
+              note={profile.mobility_note || ""}
+              onChange={(m) => setProfile((p) => ({ ...p, mobility: m }))}
+              onNote={(t) => setProfile((p) => ({ ...p, mobility_note: t }))}
+            />
           </Section>
         </div>
 

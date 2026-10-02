@@ -1,6 +1,10 @@
 {
   "id": "riverside_hall",
   "name": "Riverside Hall",
+  "area": "Riverside Walk",
+  "kind": "Arts centre",
+  "tags": ["talks", "lectures", "community", "gallery"],
+  "blurb": "The original Ecstasy demo venue: a hall with a locked side gate, one lift and live sensors.",
   "timezone": "Asia/Kolkata",
   "listing_updated": "2024-03-10",
   "listing_claims": [

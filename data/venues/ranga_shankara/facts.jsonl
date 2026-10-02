@@ -1,0 +1,10 @@
+{"days_ago": 150, "feature": "main_entrance", "status": "ok", "note": "Level entrance from 8th Cross through the front gate into the open foyer.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 150, "feature": "ramp", "status": "degraded", "note": "Short ramp into the auditorium at about 1:10 for 4 m; handrail on one side only.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 150, "feature": "toilet", "status": "ok", "note": "Accessible toilet beside the foyer, right-hand transfer.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 150, "feature": "parking", "status": "degraded", "note": "No on-site parking; drop-off at the gate. Street parking on 8th Cross fills by 19:00.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 150, "feature": "hearing_loop", "status": "unknown", "note": "No information about a hearing loop in the auditorium.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 40, "feature": "assistance_desk", "status": "ok", "note": "Box office staff help visitors to their seats; tell them when you book.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 5, "feature": "seating", "status": "ok", "note": "Benches in the open foyer seat about 20 people.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 3, "feature": "courtyard_path", "status": "ok", "note": "Foyer route to the auditorium is level and about 1.5 m wide.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 1, "feature": "side_gate", "status": "ok", "note": "Front gate open from 11:00 until the last show ends.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 1, "feature": "intercom", "status": "ok", "note": "Box office counter staffed whenever the gate is open.", "source": "Staff check", "source_type": "staff_note"}

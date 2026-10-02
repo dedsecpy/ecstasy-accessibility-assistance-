@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from .features import FEATURES, STATUS_LABELS
 
-PROMPT_VERSION = "answer-v2.2"
+PROMPT_VERSION = "answer-v2.3"
 
 # ------------------------------------------------------------------ answer
 
@@ -29,6 +29,7 @@ Rules:
 - Tailor to the profile: wheelchair users care about steps, lift, gate, path width; people who walk short distances care about distance, slopes and seating.
 - Compare the visit time with assistance desk hours. If outside staffed hours, say what that means for the gate and for help.
 - Be concise and practical. No preamble.
+- Name places as the venue does (the labels in LIVE STATUS, e.g. "Gate 2 ramp"). Never write internal feature ids such as side_gate or courtyard_path.
 
 Verdict scale:
 - go: the route works for this visitor with no unresolved blockers.

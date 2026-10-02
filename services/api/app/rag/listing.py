@@ -9,7 +9,7 @@ from typing import Any
 from nimbus_core import db, prompts
 from nimbus_core.bedrock import BedrockError, get_bedrock
 from nimbus_core.config import get_settings
-from nimbus_core.features import BLOCKING_STATUSES, FEATURES
+from nimbus_core.features import BLOCKING_STATUSES, feature_label, term, terms, use_venue
 from nimbus_core.fusion import FusedState
 from nimbus_core.visit import build_visit_context, hours_text, venue_now
 
@@ -27,7 +27,7 @@ def audit_claims(config: dict[str, Any], states: dict[str, FusedState]) -> list[
             s = states.get(fid)
             if s is None:
                 verdicts.append("unverified")
-                reasons.append(f"No evidence recorded for {FEATURES[fid].label}.")
+                reasons.append(f"No evidence recorded for {feature_label(fid)}.")
             elif s.status in BLOCKING_STATUSES:
                 verdicts.append("contradicted")
                 reasons.append(f"{s.label}: {s.status_label} - {s.note} ({s.freshness_text()})")
@@ -40,7 +40,9 @@ def audit_claims(config: dict[str, Any], states: dict[str, FusedState]) -> list[
         verdict = max(verdicts, key=lambda v: RANK[v])
         if c["id"] == "step_free" and verdict == "supported":
             verdict = "qualified"
-            reasons.append("Step-free entry exists only via the locked Side Gate, not the main entrance.")
+            main = states.get("main_entrance")
+            if main is not None and main.status == "not_step_free":
+                reasons.append(f"Step-free entry exists only via {term('gate')}, not the main entrance.")
         out.append({"claim": c["text"], "verdict": verdict, "reasons": reasons})
     return out
 
@@ -61,7 +63,7 @@ def affected_events(config: dict[str, Any], states: dict[str, FusedState], now: 
         if ctx.staffed is False:
             issues.append(f"outside assistance desk hours ({ctx.staffed_window})")
         if cp and cp.status in ("degraded", "out_of_service"):
-            issues.append("courtyard path narrowed or blocked")
+            issues.append(f"{term('path')} narrowed or blocked")
         if issues:
             out.append({**ev, "issues": issues})
     return out
@@ -72,17 +74,26 @@ def template_listing(config: dict[str, Any], states: dict[str, FusedState], toda
         s = states.get(fid)
         return f"{s.note} ({s.status_label.lower()}, {s.freshness_text()})" if s else "No information recorded."
 
+    t = terms()
     lift = states.get("lift")
+    upstairs = [name for name, loc in config.get("locations", {}).items() if loc.get("needs_lift")]
+    if upstairs:
+        lift_text = (f"{', '.join(upstairs)} {'is' if len(upstairs) == 1 else 'are'} upstairs. If the lift is out of service there is "
+                     "no step-free way to reach them. Check live status on Ecstasy or call us before travelling to any upstairs event.")
+    else:
+        lift_text = "All visitor areas are on the ground floor."
+    entry = config.get("entry_text") or (f"Step-free entry is only via {t['gate_where']}, which is kept locked. "
+                                         "Press the intercom; it is answered during assistance desk hours.")
     return f"""# {config['name']} - Access information (updated {today.isoformat()})
 
 ## Getting in step-free
 {line('main_entrance')}
-Step-free entry is only via the Side Gate on Mill Lane, which is kept locked. Press the intercom; it is answered during assistance desk hours. {line('side_gate')}
-Then cross the courtyard ({line('courtyard_path')}) and take the ramp to the ground floor foyer ({line('ramp')}).
+{entry} {line('side_gate')}
+Then cross {t['path_area']} ({line('courtyard_path')}) and take the ramp to {t['ramp_to']} ({line('ramp')}).
 
 ## Lift - {lift.status_label if lift else 'unknown'}
 {line('lift')}
-The Main Hall is on the First floor. If the lift is out of service there is no step-free way to reach it. Check live status on Ecstasy or call us before travelling to any upstairs event.
+{lift_text}
 
 ## Seating and rest points
 {line('seating')}
@@ -94,7 +105,7 @@ The Main Hall is on the First floor. If the lift is out of service there is no s
 {line('parking')}
 
 ## Assistance
-{hours_text(config)} Outside these hours security can open the Side Gate but cannot provide mobility assistance.
+{hours_text(config)} Outside these hours security can open {t['gate']} but cannot provide mobility assistance.
 """
 
 
@@ -110,6 +121,7 @@ def listing_health(venue_id: str) -> dict[str, Any]:
     config = db.get_venue(venue_id)
     if config is None:
         raise KeyError(venue_id)
+    use_venue(config)
     now = venue_now(config)
     states = refresh_ages(db.get_feature_states(venue_id), datetime.now(timezone.utc))
     claims = audit_claims(config, states)

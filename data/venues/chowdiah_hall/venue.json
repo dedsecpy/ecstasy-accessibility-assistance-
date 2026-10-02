@@ -1,0 +1,157 @@
+{
+  "id": "chowdiah_hall",
+  "name": "Chowdiah Memorial Hall",
+  "city": "Bengaluru",
+  "area": "Malleshwaram",
+  "kind": "Concert hall",
+  "tags": [
+    "music",
+    "carnatic",
+    "classical",
+    "concerts",
+    "auditorium"
+  ],
+  "blurb": "The violin-shaped concert hall, home of Carnatic and classical evenings.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2023-08-15",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "ramp"
+      ]
+    },
+    {
+      "id": "step_free",
+      "text": "Step-free access",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "ramp",
+        "courtyard_path"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilet",
+      "features": [
+        "toilet"
+      ]
+    },
+    {
+      "id": "hearing",
+      "text": "Hearing assistance available",
+      "features": [
+        "hearing_loop"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "10:00",
+      "20:00"
+    ],
+    "tue": [
+      "10:00",
+      "20:00"
+    ],
+    "wed": [
+      "10:00",
+      "20:00"
+    ],
+    "thu": [
+      "10:00",
+      "20:00"
+    ],
+    "fri": [
+      "10:00",
+      "20:00"
+    ],
+    "sat": [
+      "10:00",
+      "20:00"
+    ],
+    "sun": [
+      "10:00",
+      "18:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0101",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is only via Gate 2 on 16th Cross, which is kept shut. Ring the call bell; an usher opens it from 45 minutes before each concert.",
+  "feature_labels": {
+    "side_gate": "Gate 2 (16th Cross)",
+    "intercom": "Gate 2 call bell",
+    "ramp": "Gate 2 ramp",
+    "courtyard_path": "Forecourt path",
+    "main_entrance": "Main entrance (front steps)"
+  },
+  "terms": {
+    "gate": "Gate 2",
+    "gate_where": "Gate 2 on 16th Cross",
+    "path": "the forecourt path",
+    "path_area": "the forecourt",
+    "bypass": "the stage-door entrance",
+    "bypass_long": "the level stage-door entrance with an usher",
+    "ramp_to": "the stalls foyer",
+    "lift_from": "the foyer",
+    "seat_reserve": "an aisle seat in the stalls and a foyer chair",
+    "seating_short": "the foyer has only a few chairs and there are none along the forecourt"
+  },
+  "locations": {
+    "Main Auditorium": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Rehearsal Room": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Foyer": {
+      "floor": 0,
+      "needs_lift": false
+    }
+  },
+  "devices": {
+    "lifts": [],
+    "cameras": [
+      {
+        "id": "cam-chowdiah-gate",
+        "feature": "side_gate",
+        "label": "Gate 2, 16th Cross"
+      },
+      {
+        "id": "cam-chowdiah-path",
+        "feature": "courtyard_path",
+        "label": "Forecourt path"
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "carnatic_violin",
+      "name": "Carnatic Violin Evening",
+      "start": "2026-10-10T18:30",
+      "doors": "2026-10-10T18:00",
+      "location": "Main Auditorium"
+    },
+    {
+      "id": "sunday_symphony",
+      "name": "Sunday Symphony: Bangalore School of Music",
+      "start": "2026-10-18T19:00",
+      "doors": "2026-10-18T18:15",
+      "location": "Main Auditorium"
+    },
+    {
+      "id": "kids_music",
+      "name": "Kids' Music Morning",
+      "start": "2026-11-07T10:30",
+      "doors": "2026-11-07T10:00",
+      "location": "Rehearsal Room"
+    }
+  ]
+}

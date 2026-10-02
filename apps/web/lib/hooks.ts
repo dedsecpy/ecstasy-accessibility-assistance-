@@ -1,8 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { api, apiBase, VENUE_ID } from "./api";
+import { api, apiBase, currentVenueId, VENUE_EVENT } from "./api";
 import type { Alert, FeatureState } from "./types";
+
+/** The selected venue id; follows changes made on other pages and in other tabs. */
+export function useVenueId(): string {
+  const [id, setId] = useState(currentVenueId);
+  useEffect(() => {
+    const sync = () => setId(currentVenueId());
+    sync();
+    window.addEventListener(VENUE_EVENT, sync);
+    window.addEventListener("storage", sync);
+    return () => {
+      window.removeEventListener(VENUE_EVENT, sync);
+      window.removeEventListener("storage", sync);
+    };
+  }, []);
+  return id;
+}
 
 export function useNow(intervalMs = 1000): number {
   const [now, setNow] = useState(() => Date.now());
@@ -23,7 +39,9 @@ export interface StatusChange {
 }
 
 /** Live venue board over SSE: snapshot first, then incremental status / alert / scenario events. */
-export function useVenueStream(venueId = VENUE_ID) {
+export function useVenueStream(fixedVenueId?: string) {
+  const selected = useVenueId();
+  const venueId = fixedVenueId || selected;
   const [features, setFeatures] = useState<Record<string, FeatureState>>({});
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [scenario, setScenario] = useState<string>("normal");
@@ -35,6 +53,9 @@ export function useVenueStream(venueId = VENUE_ID) {
   useEffect(() => {
     let es: EventSource | null = null;
     let closed = false;
+    setFeatures({});
+    setAlerts([]);
+    setChanges([]);
 
     const refetch = () =>
       api.status(venueId).then((s) => {

@@ -50,6 +50,13 @@ const PATHS: Record<string, string[]> = {
   eye: ["M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z", circle(12, 12, 3)],
   car: ["M5 17h14", "M3 17v-5l2.5-5h13L21 12v5", "M3 12h18", circle(7, 17, 2), circle(17, 17, 2)],
   walk: [circle(13, 4, 2), "M9 22l3-7 3 3v4", "M6 12l3-4 4 1 3 3", "M12 15l-1-5"],
+  wheelchair: [circle(10, 4, 1.8), "M10 7.5v5.5h5.5l2.5 5.5", "M10 10h5", "M7 11.3a5.5 5.5 0 1 0 7.8 6.7"],
+  poweredChair: [circle(9, 4, 1.8), "M9 7.5v5.5h5.5l2.5 5.5", "M9 10h4.5", "M6 11.3a5.5 5.5 0 1 0 7.8 6.7", "M20 2l-2.2 3.6h3L18.5 9.5"],
+  scooter: [circle(6, 19, 2), circle(17.5, 19, 2), "M3.5 16h14", "M17.5 16 15.5 5", "M13.5 5h4", "M8 16v-4", "M5 12h6", "M5 12V8"],
+  cane: [circle(11, 4, 2), "M11 7l-.7 6", "M10.3 13 8 21", "M10.3 13l3 3.5V21", "M11 8.5l4 3", "M15.5 11.5 17 21"],
+  more: [circle(5, 12, 1.4), circle(12, 12, 1.4), circle(19, 12, 1.4)],
+  search: [circle(11, 11, 7), "m20 20-4-4"],
+  building: ["M3 21h18", "M5 21V8l7-5 7 5v13", "M9.5 21v-5h5v5", "M9 11h.01", "M15 11h.01"],
 };
 
 export type IconName = keyof typeof PATHS;

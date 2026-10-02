@@ -15,6 +15,7 @@ from typing import Any, Callable
 from nimbus_core import db, prompts
 from nimbus_core.bedrock import BedrockError, get_bedrock
 from nimbus_core.config import get_settings
+from nimbus_core.features import feature_label, use_venue
 from nimbus_core.fusion import FusedState
 from nimbus_core.schemas import AnswerBody, AskRequest
 from nimbus_core.visit import build_visit_context, find_event, venue_now
@@ -24,7 +25,7 @@ from .context import live_items, live_text, passages_text, refresh_ages
 from .rerank import rerank
 from .retrieval import HybridRetriever
 from .rules import assess
-from .validate import Validation, check, enforce, strip_invalid_citations
+from .validate import Validation, check, enforce, humanize_feature_ids, strip_invalid_citations
 
 log = logging.getLogger("api.pipeline")
 Progress = Callable[[str, str], None]
@@ -71,6 +72,7 @@ class AnswerPipeline:
         config = db.get_venue(venue_id)
         if config is None:
             raise KeyError(venue_id)
+        use_venue(config)
         now = venue_now(config, req.now)
         event = find_event(config, req.event_id)
 
@@ -108,7 +110,8 @@ class AnswerPipeline:
             progress("generate", "Writing your answer")
             user = prompts.ANSWER_USER.format(
                 now=now.strftime("%A %d %B %Y, %H:%M"), venue=config["name"], profile=req.profile.describe(),
-                visit=visit.describe(), required=", ".join(required), rule_checks=rules.summary_lines(),
+                visit=visit.describe(), required=", ".join(f"{f} ({feature_label(f)})" for f in required),
+                rule_checks=rules.summary_lines(),
                 listing_updated=config.get("listing_updated", "unknown"),
                 listing_claims="\n".join(f"- {c['text']}" for c in config.get("listing_claims", [])),
                 live=live_text(live), passages=passages_text(passages, now.date()),
@@ -145,6 +148,7 @@ class AnswerPipeline:
         citation_stats = {"total": len(cited), "invalid": sum(c not in valid_ids for c in cited),
                           "uncited_steps": sum(not s.citations for s in body.route)}
         strip_invalid_citations(body, valid_ids)
+        humanize_feature_ids(body)
         body = enforce(body, rules, validation)
 
         latency_ms = int((time.time() - t0) * 1000)

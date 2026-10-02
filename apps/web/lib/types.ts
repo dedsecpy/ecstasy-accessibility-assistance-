@@ -7,6 +7,7 @@ export type Arrival = "blue_badge" | "car" | "taxi" | "public_transport" | "on_f
 
 export interface Profile {
   mobility: Mobility;
+  mobility_note?: string;
   needs_seating: boolean;
   avoid_slopes: boolean;
   needs_assistance: boolean;
@@ -156,16 +157,26 @@ export interface VenueEvent {
   location: string;
 }
 
-export interface Venue {
+export interface VenueSummary {
   id: string;
   name: string;
   events: VenueEvent[];
+  city?: string | null;
+  area?: string | null;
+  kind?: string | null;
+  tags?: string[] | null;
+  blurb?: string | null;
+  demo?: boolean | null;
+}
+
+export interface Venue extends VenueSummary {
   assistance_phone: string;
   hours_text: string;
   listing_updated: string;
   local_time: string;
   scenario: string;
   locations: Record<string, { floor: number; needs_lift: boolean }>;
+  labels?: Record<string, string>;
 }
 
 export interface Health {

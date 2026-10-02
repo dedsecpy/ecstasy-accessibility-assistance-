@@ -1,0 +1,11 @@
+{"days_ago": 220, "feature": "main_entrance", "status": "not_step_free", "note": "The mansion entrance has seven steps and no ramp.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 220, "feature": "ramp", "status": "ok", "note": "1:18 ramp across the link bridge into the mansion ground floor.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 220, "feature": "seating", "status": "ok", "note": "Stone benches every 30-40 m along the garden path.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 220, "feature": "toilet", "status": "ok", "note": "Accessible toilet in the new wing lobby.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 220, "feature": "parking", "status": "degraded", "note": "Four accessible bays inside the Palace Road gate, about 120 m from the new wing over gravel.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 220, "feature": "hearing_loop", "status": "unknown", "note": "No information about a loop in the garden auditorium.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 50, "feature": "assistance_desk", "status": "ok", "note": "Two wheelchairs available at new wing reception.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 6, "feature": "lift", "status": "ok", "note": "New wing lift serviced, no faults.", "source": "Maintenance log", "source_type": "maintenance_log"}
+{"days_ago": 4, "feature": "courtyard_path", "status": "degraded", "note": "Garden path narrows to about 1.1 m between flower beds, with loose gravel in patches after rain.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "side_gate", "status": "ok", "note": "Level glass doors from the garden, open 10:00-17:00.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "intercom", "status": "ok", "note": "New wing reception staffed during opening hours.", "source": "Staff check", "source_type": "staff_note"}

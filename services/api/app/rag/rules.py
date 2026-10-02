@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from nimbus_core.features import BLOCKING_STATUSES, WHEELED, WIDE, feature_label
+from nimbus_core.features import BLOCKING_STATUSES, WHEELED, WIDE, feature_label, terms
 from nimbus_core.fusion import FusedState
 from nimbus_core.schemas import Profile
 from nimbus_core.visit import VisitContext
@@ -88,6 +88,7 @@ def assess(profile: Profile, visit: VisitContext, states: dict[str, FusedState])
     add = r.findings.append
     wheeled = profile.mobility in WHEELED
     phone = visit.phone
+    t = terms()
     imminent = visit.hours_until_visit is None or visit.hours_until_visit <= IMMINENT_HOURS
 
     def st(fid: str) -> FusedState | None:
@@ -128,48 +129,48 @@ def assess(profile: Profile, visit: VisitContext, states: dict[str, FusedState])
         if sg is not None and sg.status == "locked_unanswered":
             if imminent:
                 add(Finding("side_gate", "gate_unanswered_now", f"The only step-free entrance is locked and nobody is answering right now: {sg.note}",
-                            "blocker", f"Call {phone} and ask security to open the Side Gate on Mill Lane before you set off."))
+                            "blocker", f"Call {phone} and ask security to open {t['gate_where']} before you set off."))
             else:
-                add(Finding("side_gate", "gate_unanswered_earlier", f"The Side Gate was recently locked with nobody answering: {sg.note}",
-                            "caution", f"Pre-book assistance on {phone} so someone is at the Side Gate when you arrive."))
+                add(Finding("side_gate", "gate_unanswered_earlier", f"{t['gate_cap']} was recently locked with nobody answering: {sg.note}",
+                            "caution", f"Pre-book assistance on {phone} so someone is at {t['gate']} when you arrive."))
         elif sg is not None and (sg.status in UNCERTAIN or sg.stale):
-            add(Finding("side_gate", "gate_unconfirmed", f"Side Gate status is not confirmed: {sg.note}", "caution",
-                        f"Call {phone} to confirm the Side Gate will be opened for you."))
+            add(Finding("side_gate", "gate_unconfirmed", f"{feature_label('side_gate')} status is not confirmed: {sg.note}", "caution",
+                        f"Call {phone} to confirm {t['gate']} will be opened for you."))
         elif sg is not None and sg.status == "out_of_service":
-            add(Finding("side_gate", "gate_out", f"The Side Gate (only step-free entrance) is out of use: {sg.note}", "blocker",
+            add(Finding("side_gate", "gate_out", f"{t['gate_cap']} (only step-free entrance) is out of use: {sg.note}", "blocker",
                         f"Call {phone} to ask about another step-free entrance."))
         if visit.staffed is False:
             if visit.prebook_possible:
                 add(Finding("assistance_desk", "out_of_hours", f"Your visit is outside assistance desk hours ({visit.staffed_window}); "
-                            "the intercom is not answered then and the Side Gate stays locked.", "caution",
-                            f"Pre-book assistance now on {phone} so the Side Gate is opened for your arrival."))
+                            f"the intercom is not answered then and {t['gate']} stays locked.", "caution",
+                            f"Pre-book assistance now on {phone} so {t['gate']} is opened for your arrival."))
             else:
                 add(Finding("assistance_desk", "out_of_hours_late", f"Your visit is outside assistance desk hours ({visit.staffed_window}) "
                             "and the pre-booking window has passed.", "caution",
-                            f"Call {phone} during desk hours and ask security to meet you at the Side Gate at your arrival time."))
+                            f"Call {phone} during desk hours and ask security to meet you at {t['gate']} at your arrival time."))
         elif visit.staffed is None:
-            add(Finding("assistance_desk", "hours_unknown", "The intercom at the Side Gate is only answered during assistance desk hours.", "info",
+            add(Finding("assistance_desk", "hours_unknown", f"The intercom at {t['gate']} is only answered during assistance desk hours.", "info",
                         f"Check your arrival falls within desk hours, or pre-book on {phone}."))
         ic = st("intercom")
         if ic is not None and ic.status == "out_of_service":
-            add(Finding("intercom", "intercom_down", f"The Side Gate intercom is not working: {ic.note}", "caution",
-                        f"Call {phone} when you arrive at the Side Gate."))
+            add(Finding("intercom", "intercom_down", f"The {feature_label('intercom')} is not working: {ic.note}", "caution",
+                        f"Call {phone} when you arrive at {t['gate']}."))
 
-    # Courtyard path
+    # Step-free path (the courtyard at Riverside)
     cp = st("courtyard_path")
     if cp is not None and (wheeled or profile.mobility == "walks_short_distances"):
         if cp.status in BLOCKING_STATUSES:
-            add(Finding("courtyard_path", "path_blocked", f"The courtyard path (the only step-free route) is blocked: {cp.note}",
-                        "blocker" if wheeled else "caution", f"Call {phone} to ask whether the delivery-entrance bypass is available."))
+            add(Finding("courtyard_path", "path_blocked", f"{t['path_cap']} (the only step-free route) is blocked: {cp.note}",
+                        "blocker" if wheeled else "caution", f"Call {phone} to ask whether {t['bypass']} is available."))
         elif cp.status == "degraded":
             if profile.mobility in WIDE or profile.wide_chair:
-                add(Finding("courtyard_path", "path_narrow", f"The courtyard path is narrowed: {cp.note}", "caution",
-                            f"Ask the desk ({phone}) whether your chair width fits, or arrange the portable-ramp bypass via the delivery entrance."))
+                add(Finding("courtyard_path", "path_narrow", f"{t['path_cap']} is narrowed: {cp.note}", "caution",
+                            f"Ask the desk ({phone}) whether your chair width fits, or arrange {t['bypass_long']}."))
             else:
-                add(Finding("courtyard_path", "path_narrow_info", f"The courtyard path is narrowed: {cp.note}", "info"))
+                add(Finding("courtyard_path", "path_narrow_info", f"{t['path_cap']} is narrowed: {cp.note}", "info"))
         elif cp.status in UNCERTAIN or cp.stale:
-            add(Finding("courtyard_path", "path_unconfirmed", f"Courtyard path status is not confirmed ({cp.freshness_text()}).", "caution",
-                        f"Call {phone} to confirm the courtyard path is clear."))
+            add(Finding("courtyard_path", "path_unconfirmed", f"{feature_label('courtyard_path')} status is not confirmed ({cp.freshness_text()}).", "caution",
+                        f"Call {phone} to confirm {t['path']} is clear."))
 
     # Ramp
     rp = st("ramp")
@@ -186,13 +187,13 @@ def assess(profile: Profile, visit: VisitContext, states: dict[str, FusedState])
         se = st("seating")
         if se is not None and se.status == "degraded":
             add(Finding("seating", "seating", f"Seating is limited: {se.note}", "caution",
-                        f"Ask the desk ({phone}) to reserve a foyer chair and an end-of-row seat."))
+                        f"Ask the desk ({phone}) to reserve {t['seat_reserve']}."))
     if profile.needs_seating or profile.short_range or drives:
         pk = st("parking")
         if pk is not None and pk.status == "degraded":
             if drives and profile.short_range:
                 add(Finding("parking", "parking_far_short_range", f"Parking may be too far for you: {pk.note}", "caution",
-                            f"Ask the desk ({phone}) about a drop-off at the Side Gate before parking."))
+                            f"Ask the desk ({phone}) about a drop-off at {t['gate']} before parking."))
             else:
                 add(Finding("parking", "parking_far", f"Parking: {pk.note}", "info"))
         elif pk is not None and pk.status in BLOCKING_STATUSES and drives:

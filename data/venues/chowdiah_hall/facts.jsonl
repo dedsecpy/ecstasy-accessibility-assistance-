@@ -1,0 +1,10 @@
+{"days_ago": 200, "feature": "main_entrance", "status": "not_step_free", "note": "Eleven granite steps up to the violin-shaped facade; no ramp at the front.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 200, "feature": "ramp", "status": "degraded", "note": "Gate 2 ramp is about 9 m at roughly 1:12, handrails both sides, level landing at the top.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 200, "feature": "toilet", "status": "ok", "note": "Accessible toilet off the stalls foyer, left-hand transfer, grab rails both sides.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 200, "feature": "hearing_loop", "status": "out_of_service", "note": "No induction loop installed; no assistive listening offered.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 200, "feature": "parking", "status": "degraded", "note": "No reserved accessible bays; drop-off at Gate 2 is possible, street parking on 16th Cross.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 60, "feature": "assistance_desk", "status": "ok", "note": "Box office staff help 10:00-20:00 daily (Sunday until 18:00). Pre-book 24 h ahead for an usher escort.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 4, "feature": "courtyard_path", "status": "ok", "note": "Forecourt path from Gate 2 resurfaced, about 1.6 m clear.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 3, "feature": "seating", "status": "degraded", "note": "The foyer has six chairs; all were taken before the 18:30 concert.", "source": "Visitor report", "source_type": "visitor_report"}
+{"days_ago": 2, "feature": "side_gate", "status": "locked_on_request", "note": "Gate 2 is kept shut; ring the call bell and an usher opens it from 45 minutes before each concert.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "intercom", "status": "ok", "note": "Call bell at Gate 2 tested; it rings at the box office.", "source": "Staff check", "source_type": "staff_note"}

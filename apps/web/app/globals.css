@@ -379,6 +379,116 @@ body {
     opacity: 0.22;
   }
 
+  /* Icon radio tiles (mobility picker). */
+  .pick-tile {
+    position: relative;
+    display: flex;
+    min-height: 136px;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 22px;
+    background: var(--color-card);
+    padding: 16px;
+    box-shadow: inset 0 0 0 1.5px transparent;
+    transition: box-shadow 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
+  }
+  .pick-tile:active {
+    transform: scale(0.98);
+  }
+  .pick-tile:has(input:focus-visible) {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+  .pick-tile.is-on {
+    background: color-mix(in srgb, var(--color-brand-bg) 60%, var(--color-card));
+    box-shadow: inset 0 0 0 2px var(--color-brand);
+  }
+  .pick-icon {
+    display: flex;
+    height: 52px;
+    width: 52px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: var(--color-card2);
+    color: var(--color-muted);
+    transition: background-color 0.25s ease, color 0.25s ease, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .pick-tile.is-on .pick-icon {
+    background: var(--color-fill);
+    color: #ffffff;
+    transform: scale(1.06);
+  }
+  .pick-radio {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    height: 22px;
+    width: 22px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--color-field);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  }
+  .pick-tile.is-on .pick-radio {
+    background: var(--color-fill);
+    color: #ffffff;
+    box-shadow: none;
+  }
+
+  /* Venue search field. */
+  .search-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 14px;
+    background: var(--color-card);
+    padding: 0 6px 0 14px;
+    box-shadow: inset 0 0 0 1px var(--color-field);
+  }
+  .search-field:focus-within {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 1px;
+  }
+  .search-field input {
+    min-height: 50px;
+    min-width: 0;
+    flex: 1;
+    background: transparent;
+    font-size: 17px;
+    outline: none;
+  }
+  .search-field input::placeholder {
+    color: var(--color-muted);
+  }
+  .search-field input::-webkit-search-cancel-button {
+    display: none;
+  }
+  .chip {
+    display: inline-flex;
+    min-height: 40px;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 6px;
+    border-radius: 9999px;
+    background: var(--color-card);
+    padding: 0 14px;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+  }
+  .chip:hover {
+    background: var(--color-brand-bg);
+  }
+  .chip:active {
+    transform: scale(0.97);
+  }
+
   /* Sheet: slides up from the bottom on phones, a centred card from tablet width up. */
   dialog.sheet {
     position: fixed;

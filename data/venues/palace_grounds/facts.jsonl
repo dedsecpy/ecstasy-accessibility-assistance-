@@ -1,0 +1,10 @@
+{"days_ago": 120, "feature": "main_entrance", "status": "not_step_free", "note": "Main gate has a raised kerb and ticket barriers with a step.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 120, "feature": "parking", "status": "degraded", "note": "Accessible parking in the Gate 2 lot, about 350 m from the stage over gravel.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 120, "feature": "hearing_loop", "status": "out_of_service", "note": "No hearing loop at outdoor events.", "source": "Access audit", "source_type": "audit"}
+{"days_ago": 25, "feature": "assistance_desk", "status": "ok", "note": "Book platform places 48 h ahead; stewards meet you at Gate 2.", "source": "Visitor services", "source_type": "policy"}
+{"days_ago": 5, "feature": "seating", "status": "degraded", "note": "Few chairs on the grounds; the viewing platform has 12 seats.", "source": "Visitor report", "source_type": "visitor_report"}
+{"days_ago": 5, "feature": "toilet", "status": "degraded", "note": "One accessible portable toilet by Gate 2; not cleaned between sets.", "source": "Visitor report", "source_type": "visitor_report"}
+{"days_ago": 3, "feature": "courtyard_path", "status": "degraded", "note": "Temporary matting over grass, about 1.1 m wide with uneven joins; muddy after rain.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 3, "feature": "ramp", "status": "degraded", "note": "Temporary ramp to the viewing platform at about 1:10, handrail on one side.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "side_gate", "status": "ok", "note": "Level accessible lane at Gate 2 opens with the event gates.", "source": "Staff check", "source_type": "staff_note"}
+{"days_ago": 2, "feature": "intercom", "status": "ok", "note": "Help desk at Gate 2 on event days.", "source": "Staff check", "source_type": "staff_note"}

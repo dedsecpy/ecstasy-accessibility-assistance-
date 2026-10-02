@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Icon } from "@/components/Icon";
 import { StatusBadge } from "@/components/Status";
 import { PageHeader, Section, Segmented } from "@/components/ui";
-import { api } from "@/lib/api";
-import { useVenueStream } from "@/lib/hooks";
+import { api, VENUE_ID } from "@/lib/api";
+import { useVenueId, useVenueStream } from "@/lib/hooks";
 
 const ITEMS: { feature: string; label: string; options: { status: string; label: string }[] }[] = [
   { feature: "lift", label: "Lift (call to both floors, doors, alarm)", options: [
@@ -28,6 +28,8 @@ const ITEMS: { feature: string; label: string; options: { status: string; label:
 
 export default function DailyCheckPage() {
   const { features } = useVenueStream();
+  const venueId = useVenueId();
+  const custom = venueId !== VENUE_ID;
   const [picked, setPicked] = useState<Record<string, string>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [name, setName] = useState("");
@@ -67,8 +69,9 @@ export default function DailyCheckPage() {
 
         <Section id="items" title="Access features">
           <ul className="grid gap-3 lg:grid-cols-2">
-            {ITEMS.map((it) => {
-              const cur = features[it.feature];
+            {ITEMS.filter((it) => !custom || features[it.feature]).map((item) => {
+              const cur = features[item.feature];
+              const it = custom && cur ? { ...item, label: cur.label } : item;
               const sel = picked[it.feature];
               return (
                 <li key={it.feature} className={`card p-4 transition-shadow ${sel ? "ring-2 ring-brand" : ""}`}>

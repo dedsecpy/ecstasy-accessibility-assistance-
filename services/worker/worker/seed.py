@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import datetime, time
+from datetime import datetime, time, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -41,7 +41,11 @@ def seed_venue(venue_dir: Path) -> dict[str, Any]:
             if f.get("feature") not in FEATURES:
                 continue
             kind = SOURCE_TYPE_TO_KIND.get(f.get("source_type", ""), "report")
-            observed = datetime.combine(datetime.fromisoformat(f["date"][:10]).date(), time(9, 0), tzinfo=tz)
+            if "days_ago" in f:
+                day = datetime.now(tz).date() - timedelta(days=int(f["days_ago"]))
+            else:
+                day = datetime.fromisoformat(f["date"][:10]).date()
+            observed = datetime.combine(day, time(9, 0), tzinfo=tz)
             db.insert_observation(vid, f["feature"], f.get("status", "unknown"), kind, f.get("note", ""),
                                   {"source": f.get("source", "")}, f.get("confidence"), f"seed:facts:{i}", observed)
             n += 1

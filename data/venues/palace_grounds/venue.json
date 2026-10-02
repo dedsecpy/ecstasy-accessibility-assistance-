@@ -1,0 +1,137 @@
+{
+  "id": "palace_grounds",
+  "name": "Bangalore Palace Grounds",
+  "city": "Bengaluru",
+  "area": "Vasanth Nagar",
+  "kind": "Open-air concert grounds",
+  "tags": [
+    "concerts",
+    "festivals",
+    "outdoors",
+    "palace",
+    "live music"
+  ],
+  "blurb": "Sprawling palace lawns that host the city's big concerts and festivals.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2023-11-05",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible",
+      "features": [
+        "side_gate",
+        "courtyard_path",
+        "ramp"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilets",
+      "features": [
+        "toilet"
+      ]
+    },
+    {
+      "id": "step_free",
+      "text": "Step-free viewing platform",
+      "features": [
+        "courtyard_path",
+        "ramp"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "12:00",
+      "23:00"
+    ],
+    "tue": [
+      "12:00",
+      "23:00"
+    ],
+    "wed": [
+      "12:00",
+      "23:00"
+    ],
+    "thu": [
+      "12:00",
+      "23:00"
+    ],
+    "fri": [
+      "12:00",
+      "23:00"
+    ],
+    "sat": [
+      "12:00",
+      "23:00"
+    ],
+    "sun": [
+      "12:00",
+      "23:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0108",
+  "prebook_hours": 48,
+  "entry_text": "Step-free entry is through the accessible lane at Gate 2 on Jayamahal Road, which opens with the event gates.",
+  "feature_labels": {
+    "side_gate": "Gate 2 accessible lane",
+    "intercom": "Gate 2 help desk",
+    "ramp": "Viewing platform ramp",
+    "courtyard_path": "Matting path to the lawn",
+    "main_entrance": "Main gate"
+  },
+  "terms": {
+    "gate": "Gate 2",
+    "gate_where": "Gate 2 on Jayamahal Road",
+    "path": "the matting path",
+    "path_area": "the lawn",
+    "bypass": "the gravel service road",
+    "bypass_long": "the gravel service road to the viewing platform (ask a steward)",
+    "ramp_to": "the accessible viewing platform",
+    "lift_from": "the gate",
+    "seat_reserve": "a seat on the accessible viewing platform",
+    "seating_short": "chairs are scarce and the viewing platform fills early"
+  },
+  "locations": {
+    "Main Lawn": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Tribe Lawn": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Palace Courtyard": {
+      "floor": 0,
+      "needs_lift": false
+    }
+  },
+  "devices": {
+    "lifts": [],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "indie_nights",
+      "name": "Open-air concert: Indie Nights",
+      "start": "2026-10-17T18:00",
+      "doors": "2026-10-17T16:00",
+      "location": "Main Lawn"
+    },
+    {
+      "id": "food_craft",
+      "name": "Food and craft festival",
+      "start": "2026-10-31T12:00",
+      "doors": "2026-10-31T12:00",
+      "location": "Tribe Lawn"
+    },
+    {
+      "id": "palace_walk",
+      "name": "Palace heritage walk",
+      "start": "2026-11-08T12:30",
+      "doors": "2026-11-08T12:15",
+      "location": "Palace Courtyard"
+    }
+  ]
+}

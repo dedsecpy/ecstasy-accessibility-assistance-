@@ -6,6 +6,8 @@ export interface SavedPlan {
   request: AskRequest;
   result: AskResult;
   savedAt: string;
+  venueId?: string;
+  venueName?: string;
 }
 
 export function savePlan(p: SavedPlan) {

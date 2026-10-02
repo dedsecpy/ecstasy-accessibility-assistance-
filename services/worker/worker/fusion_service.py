@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 
 from nimbus_core import db
 from nimbus_core.config import get_settings
+from nimbus_core.features import use_venue
 from nimbus_core.fusion import derive_alerts, fuse_all, source_rules, state_changed
 
 log = logging.getLogger("worker.fusion")
@@ -28,6 +29,7 @@ def recompute(venue_id: str, now: datetime | None = None, quiet_alerts: bool = F
     """Fuse the latest observations; returns the number of features whose state changed."""
     now = now or datetime.now(timezone.utc)
     with _lock(venue_id):
+        use_venue(db.get_venue(venue_id))
         states = fuse_all(db.latest_observations(venue_id), now, rules())
         prev = db.get_feature_states(venue_id)
         changed = 0

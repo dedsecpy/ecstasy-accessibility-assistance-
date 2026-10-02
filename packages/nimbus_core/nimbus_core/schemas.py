@@ -26,6 +26,7 @@ ARRIVAL_TEXT = {
 
 class Profile(BaseModel):
     mobility: Mobility = "manual_wheelchair"
+    mobility_note: str = Field("", max_length=200)
     needs_seating: bool = False
     avoid_slopes: bool = False
     needs_assistance: bool = False
@@ -42,7 +43,8 @@ class Profile(BaseModel):
     companion: bool = False
 
     def describe(self) -> str:
-        parts = [MOBILITY_LABELS.get(self.mobility, self.mobility)]
+        note = self.mobility_note.strip()
+        parts = [f"gets around: {note}" if self.mobility == "other" and note else MOBILITY_LABELS.get(self.mobility, self.mobility)]
         if self.chair_width_mm:
             parts.append(f"chair or scooter is {self.chair_width_mm} mm wide")
         if self.walk_range:
@@ -87,6 +89,8 @@ class Profile(BaseModel):
             t.append("parking blue badge drop-off")
         if self.chair_width_mm:
             t.append("width narrow path")
+        if self.mobility == "other" and self.mobility_note.strip():
+            t.append(self.mobility_note.strip())
         return " ".join(t)
 
     @property

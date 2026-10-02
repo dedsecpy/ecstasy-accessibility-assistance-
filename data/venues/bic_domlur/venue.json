@@ -1,0 +1,160 @@
+{
+  "id": "bic_domlur",
+  "name": "Bangalore International Centre",
+  "city": "Bengaluru",
+  "area": "Domlur",
+  "kind": "Arts and ideas centre",
+  "tags": [
+    "talks",
+    "music",
+    "film",
+    "exhibitions",
+    "indiranagar"
+  ],
+  "blurb": "Talks, film, music and exhibitions in a modern, step-free building.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2026-05-20",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Fully wheelchair accessible",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "ramp",
+        "lift"
+      ]
+    },
+    {
+      "id": "lift_all_floors",
+      "text": "Lift to all floors",
+      "features": [
+        "lift"
+      ]
+    },
+    {
+      "id": "hearing_loop",
+      "text": "Hearing loop in the auditorium",
+      "features": [
+        "hearing_loop"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilets on every floor",
+      "features": [
+        "toilet"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": [
+      "10:00",
+      "21:00"
+    ],
+    "tue": [
+      "10:00",
+      "21:00"
+    ],
+    "wed": [
+      "10:00",
+      "21:00"
+    ],
+    "thu": [
+      "10:00",
+      "21:00"
+    ],
+    "fri": [
+      "10:00",
+      "21:00"
+    ],
+    "sat": [
+      "10:00",
+      "21:00"
+    ],
+    "sun": [
+      "10:00",
+      "21:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0103",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is through the automatic main doors from the forecourt; reception is just inside.",
+  "feature_labels": {
+    "side_gate": "Main doors (step-free)",
+    "intercom": "Reception help point",
+    "ramp": "Forecourt ramp",
+    "courtyard_path": "Forecourt walkway",
+    "parking": "Basement accessible parking"
+  },
+  "terms": {
+    "gate": "the main doors",
+    "gate_where": "the main doors on the forecourt",
+    "path": "the forecourt walkway",
+    "path_area": "the forecourt",
+    "bypass": "the basement entrance",
+    "bypass_long": "the basement entrance and car park lift",
+    "ramp_to": "the main doors",
+    "lift_from": "the lobby",
+    "seat_reserve": "a reserved aisle seat",
+    "seating_short": "the lobby seats are often taken before talks"
+  },
+  "locations": {
+    "Auditorium": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Gallery": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Seminar Room": {
+      "floor": 1,
+      "needs_lift": true
+    },
+    "Terrace": {
+      "floor": 2,
+      "needs_lift": true
+    }
+  },
+  "devices": {
+    "lifts": [
+      {
+        "id": "lift-bic",
+        "feature": "lift",
+        "label": "Main lift (Basement - Terrace)"
+      }
+    ],
+    "cameras": [
+      {
+        "id": "cam-bic-foyer",
+        "feature": "seating",
+        "label": "Lobby seating"
+      }
+    ]
+  },
+  "events": [
+    {
+      "id": "talk_cities",
+      "name": "Talk: Cities that Walk",
+      "start": "2026-10-07T18:30",
+      "doors": "2026-10-07T18:00",
+      "location": "Auditorium"
+    },
+    {
+      "id": "film_club",
+      "name": "Film club: Kannada new wave",
+      "start": "2026-10-16T19:00",
+      "doors": "2026-10-16T18:30",
+      "location": "Seminar Room"
+    },
+    {
+      "id": "terrace_jazz",
+      "name": "Terrace music: Jazz at Dusk",
+      "start": "2026-10-24T19:30",
+      "doors": "2026-10-24T19:00",
+      "location": "Terrace"
+    }
+  ]
+}

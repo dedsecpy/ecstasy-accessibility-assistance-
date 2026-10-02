@@ -1,0 +1,143 @@
+{
+  "id": "ngma_bengaluru",
+  "name": "National Gallery of Modern Art",
+  "city": "Bengaluru",
+  "area": "Palace Road",
+  "kind": "Art gallery",
+  "tags": [
+    "art",
+    "gallery",
+    "heritage",
+    "exhibitions",
+    "ngma"
+  ],
+  "blurb": "Modern Indian art in the Manikyavelu Mansion and its glass new wing.",
+  "demo": true,
+  "timezone": "Asia/Kolkata",
+  "listing_updated": "2023-02-14",
+  "listing_claims": [
+    {
+      "id": "wheelchair_accessible",
+      "text": "Wheelchair accessible",
+      "features": [
+        "main_entrance",
+        "side_gate",
+        "courtyard_path",
+        "lift"
+      ]
+    },
+    {
+      "id": "step_free",
+      "text": "Step-free access to all galleries",
+      "features": [
+        "side_gate",
+        "courtyard_path",
+        "ramp",
+        "lift"
+      ]
+    },
+    {
+      "id": "accessible_toilet",
+      "text": "Accessible toilet",
+      "features": [
+        "toilet"
+      ]
+    }
+  ],
+  "assistance_hours": {
+    "mon": null,
+    "tue": [
+      "10:00",
+      "17:00"
+    ],
+    "wed": [
+      "10:00",
+      "17:00"
+    ],
+    "thu": [
+      "10:00",
+      "17:00"
+    ],
+    "fri": [
+      "10:00",
+      "17:00"
+    ],
+    "sat": [
+      "10:00",
+      "17:00"
+    ],
+    "sun": [
+      "10:00",
+      "17:00"
+    ]
+  },
+  "assistance_phone": "+91 80 0000 0105",
+  "prebook_hours": 24,
+  "entry_text": "Step-free entry is via the new wing glass doors from the garden; the mansion's front steps have no ramp.",
+  "feature_labels": {
+    "side_gate": "New wing entrance",
+    "intercom": "New wing reception",
+    "ramp": "Link-bridge ramp",
+    "courtyard_path": "Garden path",
+    "main_entrance": "Mansion entrance"
+  },
+  "terms": {
+    "gate": "the new wing entrance",
+    "gate_where": "the new wing entrance off the garden",
+    "path": "the garden path",
+    "path_area": "the garden",
+    "bypass": "the paved service drive",
+    "bypass_long": "the paved service drive to the new wing (ask security at the gate)",
+    "ramp_to": "the mansion ground floor",
+    "lift_from": "the new wing lobby",
+    "seat_reserve": "a seat near the door in the auditorium",
+    "seating_short": "the garden benches are spaced out and the walk from the gate is long"
+  },
+  "locations": {
+    "Mansion Galleries": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "Garden Auditorium": {
+      "floor": 0,
+      "needs_lift": false
+    },
+    "New Wing Galleries": {
+      "floor": 1,
+      "needs_lift": true
+    }
+  },
+  "devices": {
+    "lifts": [
+      {
+        "id": "lift-ngma",
+        "feature": "lift",
+        "label": "New wing lift"
+      }
+    ],
+    "cameras": []
+  },
+  "events": [
+    {
+      "id": "modernists_walk",
+      "name": "Exhibition walkthrough: Modernists of Bengal",
+      "start": "2026-10-11T11:00",
+      "doors": "2026-10-11T10:45",
+      "location": "New Wing Galleries"
+    },
+    {
+      "id": "garden_sketching",
+      "name": "Sunday sketching in the garden",
+      "start": "2026-10-18T10:30",
+      "doors": "2026-10-18T10:15",
+      "location": "Garden Auditorium"
+    },
+    {
+      "id": "curator_talk",
+      "name": "Curator talk: Collecting the modern",
+      "start": "2026-11-01T15:00",
+      "doors": "2026-11-01T14:30",
+      "location": "Garden Auditorium"
+    }
+  ]
+}

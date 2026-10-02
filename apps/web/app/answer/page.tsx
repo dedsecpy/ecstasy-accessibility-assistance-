@@ -32,7 +32,7 @@ export default function AnswerPage() {
   const [open, setOpen] = useState<Citation | null>(null);
   const [checked, setChecked] = useState<Record<number, boolean>>({});
   const [refreshing, setRefreshing] = useState(false);
-  const { features } = useVenueStream();
+  const { features } = useVenueStream(plan?.venueId);
 
   useEffect(() => {
     setPlan(loadPlan());
@@ -59,8 +59,8 @@ export default function AnswerPage() {
     if (!plan) return;
     setRefreshing(true);
     try {
-      const r = await askStream(plan.request, () => undefined);
-      const next = { request: plan.request, result: r, savedAt: new Date().toISOString() };
+      const r = await askStream(plan.request, () => undefined, plan.venueId);
+      const next = { ...plan, result: r, savedAt: new Date().toISOString() };
       savePlan(next);
       setPlan(next);
       setChecked({});
@@ -116,6 +116,9 @@ export default function AnswerPage() {
           <div className="space-y-4">
             <VerdictCard verdict={a.verdict} headline={a.headline} />
             <div className="flex flex-wrap gap-2 px-1 text-[13px] font-semibold">
+              {plan.venueName && (
+                <span className="badge bg-card px-3 py-1.5 text-ink"><Icon name="building" className="h-3.5 w-3.5 text-brand" />{plan.venueName}</span>
+              )}
               {result.visit.event_name && (
                 <span className="badge bg-card px-3 py-1.5 text-ink"><Icon name="calendar" className="h-3.5 w-3.5 text-brand" />{result.visit.event_name}</span>
               )}

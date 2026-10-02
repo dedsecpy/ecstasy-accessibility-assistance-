@@ -6,7 +6,9 @@ Permanent features (a staircase, a ramp gradient) never go stale.
 """
 from __future__ import annotations
 
+from contextvars import ContextVar
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass(frozen=True)
@@ -101,10 +103,49 @@ MOBILITY_QUERY_TERMS = {
 }
 
 
+# Place names used in route wording. Each venue.json can override them under "terms" (and feature
+# labels under "feature_labels"); these defaults describe Riverside Hall.
+DEFAULT_TERMS = {
+    "gate": "the Side Gate",
+    "gate_where": "the Side Gate on Mill Lane",
+    "path": "the courtyard path",
+    "path_area": "the courtyard",
+    "bypass": "the delivery-entrance bypass",
+    "bypass_long": "the portable-ramp bypass via the delivery entrance",
+    "ramp_to": "the ground floor foyer",
+    "lift_from": "the foyer",
+    "seat_reserve": "a foyer chair and an end-of-row seat",
+    "seating_short": "seating on the route is scarce and the foyer chairs are taken",
+}
+
+_venue_names: ContextVar[tuple[dict[str, str], dict[str, str]]] = ContextVar("venue_names", default=({}, {}))
+
+
+def use_venue(config: dict[str, Any] | None) -> None:
+    """Make feature_label() and term() speak about this venue for the rest of the current request or task."""
+    cfg = config or {}
+    _venue_names.set((dict(cfg.get("feature_labels") or {}), dict(cfg.get("terms") or {})))
+
+
+def term(key: str, capital: bool = False) -> str:
+    s = _venue_names.get()[1].get(key) or DEFAULT_TERMS[key]
+    return s[:1].upper() + s[1:] if capital else s
+
+
+def terms() -> dict[str, str]:
+    """All place terms for the current venue, plus capitalised variants (gate_cap, path_cap, ...)."""
+    out = {k: term(k) for k in DEFAULT_TERMS}
+    out.update({f"{k}_cap": term(k, capital=True) for k in DEFAULT_TERMS})
+    return out
+
+
 def status_label(status: str) -> str:
     return STATUS_LABELS.get(status, status)
 
 
 def feature_label(fid: str) -> str:
+    override = _venue_names.get()[0].get(fid)
+    if override:
+        return override
     f = FEATURES.get(fid)
     return f.label if f else fid

@@ -4,17 +4,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Avatar } from "@/components/AccountMenu";
 import { Icon, type IconName } from "@/components/Icon";
+import { MobilityPicker } from "@/components/MobilityPicker";
 import { ChoiceRow, Notice, PageHeader, Section, Segmented, SwitchRow } from "@/components/ui";
 import { DEFAULT_PROFILE, loadAccount, saveAccount } from "@/lib/account";
 import type { Arrival, Mobility, Profile, StepsAbility, WalkRange } from "@/lib/types";
 
-const MOBILITY: { id: Mobility; label: string; detail: string }[] = [
-  { id: "manual_wheelchair", label: "Manual wheelchair", detail: "Self-propelled or pushed" },
-  { id: "powered_wheelchair", label: "Powered wheelchair", detail: "Electric chair" },
-  { id: "mobility_scooter", label: "Mobility scooter", detail: "Wider and needs a longer turning space" },
-  { id: "walks_short_distances", label: "I walk, but only short distances", detail: "Perhaps with a stick, crutches or a frame" },
-  { id: "other", label: "Other or prefer not to say", detail: "We will check the main step-free route" },
-];
 const WHEELED: Mobility[] = ["manual_wheelchair", "powered_wheelchair", "mobility_scooter"];
 
 const WALK: { value: WalkRange; label: string }[] = [
@@ -103,6 +97,7 @@ export default function SettingsPage() {
       chair_width_mm: wheeled ? w : null,
       steps: wheeled ? null : profile.steps,
       free_text: profile.free_text.trim(),
+      mobility_note: profile.mobility === "other" ? (profile.mobility_note || "").trim() : "",
     };
     saveAccount({ name: name.trim(), profile: next });
     setProfile(next);
@@ -144,15 +139,13 @@ export default function SettingsPage() {
           </Section>
 
           <Section id="mobility" title="How do you usually get around?">
-            <fieldset>
-              <legend className="sr-only">How do you usually get around?</legend>
-              <div className="list">
-                {MOBILITY.map((m) => (
-                  <ChoiceRow key={m.id} name="mobility" value={m.id} checked={profile.mobility === m.id}
-                    onChange={() => update({ mobility: m.id })} title={m.label} detail={m.detail} />
-                ))}
-              </div>
-            </fieldset>
+            <MobilityPicker
+              legend="How do you usually get around?"
+              value={profile.mobility}
+              note={profile.mobility_note || ""}
+              onChange={(m) => update({ mobility: m })}
+              onNote={(t) => update({ mobility_note: t })}
+            />
           </Section>
 
           {wheeled && (
