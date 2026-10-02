@@ -103,6 +103,10 @@ body {
   outline-offset: 2px;
   border-radius: 10px;
 }
+/* The search box draws its own focus glow around the whole field. */
+.search-field input:focus-visible {
+  outline: none;
+}
 
 ::selection {
   background: color-mix(in srgb, var(--color-fill) 25%, transparent);
@@ -451,8 +455,10 @@ body {
     box-shadow: inset 0 0 0 1px var(--color-field);
   }
   .search-field:focus-within {
-    outline: 3px solid var(--color-brand);
-    outline-offset: 1px;
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--color-brand) 70%, transparent),
+      0 0 0 4px color-mix(in srgb, var(--color-brand) 16%, transparent),
+      0 0 22px -4px color-mix(in srgb, var(--color-brand) 45%, transparent);
   }
   .search-field input {
     min-height: 50px;
